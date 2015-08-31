@@ -1,0 +1,123 @@
+// TODO: InsertionSort
+// TODO: BucketSort
+// TODO: CountingSort
+// TODO: MergeSort
+// TODO: BinaryTreeSort
+// TODO: RadixSort
+// TODO: ShellSort
+// TODO: SelectionSort
+// TODO: HeapSort
+// TODO: QuickSort
+
+#include <iostream>
+int getArraySize();
+int getAlgorithmNumber();
+void addNRandomElements(int array[], int n);
+void printExecutionTime(int array[], int n, void (*f)(int *, int));
+void bubbleSort(int v[] , int n);
+
+
+int main(int argc, const char * argv[])
+{
+  int n = getArraySize();
+  int arrayToSort[n];
+  int algorithm = getAlgorithmNumber();
+
+  addNRandomElements(arrayToSort, n);
+
+  switch (algorithm) {
+    case 1:
+      printExecutionTime(arrayToSort, n, bubbleSort);
+      break;
+    default:
+      std::cout << "Algorithm number not valid" << std::endl;
+  }
+
+  return 0;
+}
+
+// REQUIRES: None.
+// MODIFIES: None.
+// EFFECTS: Returns the int inputed by user.
+int getArraySize()
+{
+  int n;
+  std::cout << "Insert the number of elements: " << std::endl;
+  std::cin >> n;
+  return n;
+}
+
+// REQUIRES: None.
+// MODIFIES: None.
+// EFFECTS: Shows the user the algorithm options and returns the integer
+// representing the selected algorithm.
+int getAlgorithmNumber()
+{
+  std:: cout << "Select the algorithm type: " << std::endl;
+  std:: cout << "1 BubbleSort" << std::endl;
+  std:: cout << "2 CocktailSort" << std::endl;
+  std:: cout << "3 InsertionSort" << std::endl;
+  std:: cout << "4 BucketSort" << std::endl;
+  std:: cout << "5 CountingSort" << std::endl;
+  std:: cout << "6 MergeSort" << std::endl;
+  std:: cout << "7 BinaryTreeSort" << std::endl;
+  std:: cout << "8 RadixSort" << std::endl;
+  std:: cout << "9 ShellSort" << std::endl;
+  std:: cout << "10 SelectionSort" << std::endl;
+  std:: cout << "11 HeapSort" << std::endl;
+  std:: cout << "12 QuickSort" << std::endl;
+
+  int n;
+  std::cin >> n;
+  return n;
+}
+
+// REQUIRES: None.
+// MODIFIES: None.
+// EFFECTS: After the user inputs an int, return a new n-sized array filled with
+// random ints
+void addNRandomElements(int array[], int n)
+{
+  srand((int)time(nullptr));
+  for(int i = 0; i < n; i++)
+  {
+      array[i] = rand() % 100;
+  }
+
+}
+
+
+// REQUIRES: n is the size of the array.
+// MODIFIES: v[]
+// EFFECTS: Use bubbleSort algorithm to sort v[]
+void bubbleSort(int v[] , int n)
+{
+    int temp;
+
+    for (int i = 0; i < n; i++)
+    {
+        for (int j = n-1; j > i; j--)
+        {
+            if (v[j-1] > v[j])
+            {
+                temp = v[j-1];
+                v[j-1] = v[j];
+                v[j] = temp;
+            }
+        }
+    }
+}
+
+// REQUIRES: None.
+// MODIFIES: None.
+// EFFECTS: Displays the time before and after executing a function.
+void printExecutionTime(int array[], int n, void (*f)(int *, int)){
+  auto start_time = std::chrono::high_resolution_clock::now();
+  (*f)(array, n);
+  auto end_time = std::chrono::high_resolution_clock::now();
+
+  auto timeToExecute = end_time - start_time;
+
+  std::cout << "The execution time in microseconds was: " << std::endl;
+  std::cout << std::chrono::duration_cast<std::chrono::microseconds>(timeToExecute).count() << std::endl;
+}
