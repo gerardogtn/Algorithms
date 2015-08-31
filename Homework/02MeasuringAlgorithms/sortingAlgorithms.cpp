@@ -15,6 +15,7 @@ int getAlgorithmNumber();
 void addNRandomElements(int array[], int n);
 void printExecutionTime(int array[], int n, void (*f)(int *, int));
 void bubbleSort(int v[] , int n);
+void insertionSort(int v[], int n);
 
 
 int main(int argc, const char * argv[])
@@ -28,6 +29,9 @@ int main(int argc, const char * argv[])
   switch (algorithm) {
     case 1:
       printExecutionTime(arrayToSort, n, bubbleSort);
+      break;
+    case 3:
+      printExecutionTime(arrayToSort, n, insertionSort);
       break;
     default:
       std::cout << "Algorithm number not valid" << std::endl;
@@ -109,9 +113,33 @@ void bubbleSort(int v[] , int n)
 }
 
 // REQUIRES: None.
+// MODIFIES: v[]
+// EFFECTS: Sorts v[] using InsertionSort algorithm.
+void insertionSort(int v[], int n)
+{
+    int index;
+
+    for (int i=1; i < n; i++)
+    {
+        index = v[i];
+
+        int j = i-1;
+
+        while (j >= 0 && v[j] > index)
+        {
+            v[j + 1] = v[j];
+            j--;
+        }
+
+        v[j+1] = index;
+    }
+}
+
+// REQUIRES: None.
 // MODIFIES: None.
 // EFFECTS: Displays the time before and after executing a function.
-void printExecutionTime(int array[], int n, void (*f)(int *, int)){
+void printExecutionTime(int array[], int n, void (*f)(int *, int))
+{
   auto start_time = std::chrono::high_resolution_clock::now();
   (*f)(array, n);
   auto end_time = std::chrono::high_resolution_clock::now();
