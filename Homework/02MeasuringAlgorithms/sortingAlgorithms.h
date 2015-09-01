@@ -257,20 +257,36 @@ void countingSort(int v[], int n)
   delete output;
 }
 
-void heapSort(int numbers[], int array_size)
+void heapSort(int v[], int n)
 {
-  int i, temp;
+	bool notSorted = true;
 
-  for (i = (array_size / 2)-1; i >= 0; i--)
-    siftDown(numbers, i, array_size);
+	while(notSorted)
+	{
+    notSorted = false;
+	  for(int i = 0; i < n - 1; i++)
+	  {
+	    if( v[i] > v[i + 1] )
+	    {
+        std::swap(v[i], v[i+1]);
+	      notSorted = true;
+	    }
+	  }
 
-  for (i = array_size-1; i >= 1; i--)
-  {
-    temp = numbers[0];
-    numbers[0] = numbers[i];
-    numbers[i] = temp;
-    siftDown(numbers, 0, i-1);
-  }
+	  if(!notSorted) break;
+
+    notSorted = false;
+
+    for(int i = n - 1; i > 0; i-- )
+    {
+	    if( v[i - 1] > v[i] )
+	    {
+	      std::swap( v[i], v[i - 1] );
+	      notSorted = true;
+	    }
+    }
+
+	}
 }
 
 
