@@ -17,6 +17,12 @@ void printExecutionTime(int array[], int n, void (*f)(int *, int));
 void bubbleSort(int v[] , int n);
 void insertionSort(int v[], int n);
 void selectionSort(int v[], int n);
+void quickSort(int v[], int n);
+void quickSort(int v[], int primero, int ultimo);
+int partition(int v[], int lowerBound, int upperBound);
+void mergeSort(int v[], int n);
+void mergeSort(int v[], int l, int n, int N);
+void merge(int v[], int l, int m, int n, int N);
 
 
 int main(int argc, const char * argv[])
@@ -33,12 +39,31 @@ int main(int argc, const char * argv[])
     case 1:
       sortingAlgorithm = bubbleSort;
       break;
+    case 2:
+      break;
     case 3:
       sortingAlgorithm = insertionSort;
+      break;
+    case 4:
+      break;
+    case 5:
+      break;
+    case 6:
+      sortingAlgorithm = mergeSort;
+      break;
+    case 7:
+      break;
+    case 8:
+      break;
+    case 9:
       break;
     case 10:
       sortingAlgorithm = selectionSort;
       break;
+    case 11:
+      break;
+    case 12:
+      sortingAlgorithm = quickSort;
     default:
       break;
   }
@@ -154,22 +179,95 @@ void insertionSort(int v[], int n)
 // EFFECTS:  Sorts v[] using selectionSort
 void selectionSort(int v[], int n)
 {
-    int minimo = 0;
-    int temp;
-
     for(int i = 0; i < n-1; i++)
     {
-        minimo = i;
+        int temp;
+        int minimum = i;
         for(int j = i + 1; j < n; j++)
         {
-            if (v[minimo] > v[j])
-                minimo = j;
+            if (v[minimum] > v[j])
+                minimum = j;
         }
-        temp = v[minimo];
-        v[minimo] = v[i];
+        temp = v[minimum];
+        v[minimum] = v[i];
         v[i] = temp;
     }
 }
+
+void quickSort(int v[], int n)
+{
+    quickSort(v, 0, n - 1);
+}
+
+void quickSort(int v[], int lowerBound, int upperBound)
+{
+  if (lowerBound < upperBound)
+  {
+    int p = partition(v, lowerBound, upperBound);
+    quickSort(v, lowerBound, p - 1);
+    quickSort(v, p + 1, upperBound);
+  }
+}
+
+int partition(int v[], int lowerBound, int upperBound)
+{
+    int pivot = v[upperBound];
+    int i = lowerBound;
+    for (int j = lowerBound; j < upperBound; j++){
+      if (v[j] <= pivot)
+      {
+        std::swap(v[i], v[j]);
+        i++;
+      }
+    }
+    std::swap(v[i], v[upperBound]);
+    return i;
+}
+
+void mergeSort(int v[], int n)
+{
+  mergeSort(v, 0, n-1, n);
+}
+
+void mergeSort(int v[], int l, int n, int N)
+{
+    int m = (n+l)/2;
+    if (n > l)
+    {
+        mergeSort (v, l, m, N);
+        mergeSort (v, m+1, n, N);
+        merge (v, l, m, n, N);
+    }
+}
+
+void merge(int v[], int l, int m, int n, int N)
+{
+    int i, j, k;
+    int aux[N];
+
+    for(i = m+1; i>l; i--)
+    {
+        aux[i-1] = v[i-1];
+    }
+
+    for (j=m; j<n; j++)
+    {
+        aux[n+m-j] = v[j+1];
+    }
+
+    for(k=l;k<=n;k++)
+    {
+        if (aux[i] < aux[j])
+        {
+            v[k] = aux[i++];
+        }
+        else
+        {
+            v[k] = aux[j--];
+        }
+    }
+}
+
 // REQUIRES: None.
 // MODIFIES: None.
 // EFFECTS: Displays the time before and after executing a function.
