@@ -16,6 +16,7 @@ int main(int argc, const char * argv[])
       sortingAlgorithm = bubbleSort;
       break;
     case 2:
+      sortingAlgorithm = cocktailSort;
       break;
     case 3:
       sortingAlgorithm = insertionSort;
