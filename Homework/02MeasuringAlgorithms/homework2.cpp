@@ -23,6 +23,7 @@ int main(int argc, const char * argv[])
     case 4:
       break;
     case 5:
+      sortingAlgorithm = countingSort;
       break;
     case 6:
       sortingAlgorithm = mergeSort;
@@ -37,6 +38,7 @@ int main(int argc, const char * argv[])
       sortingAlgorithm = selectionSort;
       break;
     case 11:
+      sortingAlgorithm = heapSort;
       break;
     case 12:
       sortingAlgorithm = quickSort;
