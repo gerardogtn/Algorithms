@@ -22,6 +22,7 @@ void countingSort(int v[], int n);
 int getMaxValue(int v[], int n);
 void heapSort(int numbers[], int array_size);
 void siftDown(int numbers[], int root, int bottom);
+void cocktailSort(int v[], int n);
 
 
 // REQUIRES: None.
@@ -259,7 +260,23 @@ void countingSort(int v[], int n)
 
 void heapSort(int v[], int n)
 {
-	bool notSorted = true;
+  int i, temp;
+
+  for (i = (n / 2)-1; i >= 0; i--)
+    siftDown(v, i, n);
+
+  for (i = n - 1; i >= 1; i--)
+  {
+    temp = v[0];
+    v[0] = v[i];
+    v[i] = temp;
+    siftDown(v, 0, i-1);
+  }
+}
+
+void cocktailSort(int v[], int n)
+{
+  bool notSorted = true;
 
 	while(notSorted)
 	{
@@ -288,7 +305,6 @@ void heapSort(int v[], int n)
 
 	}
 }
-
 
 void siftDown(int numbers[], int root, int bottom)
 {
