@@ -5,17 +5,18 @@
 // TODO: BinaryTreeSort
 // TODO: RadixSort
 // TODO: ShellSort
-// TODO: SelectionSort
 // TODO: HeapSort
 // TODO: QuickSort
 
 #include <iostream>
+
 int getArraySize();
 int getAlgorithmNumber();
 void addNRandomElements(int array[], int n);
 void printExecutionTime(int array[], int n, void (*f)(int *, int));
 void bubbleSort(int v[] , int n);
 void insertionSort(int v[], int n);
+void selectionSort(int v[], int n);
 
 
 int main(int argc, const char * argv[])
@@ -26,15 +27,28 @@ int main(int argc, const char * argv[])
 
   addNRandomElements(arrayToSort, n);
 
+  void (*sortingAlgorithm)(int *, int) = nullptr;
+
   switch (algorithm) {
     case 1:
-      printExecutionTime(arrayToSort, n, bubbleSort);
+      sortingAlgorithm = bubbleSort;
       break;
     case 3:
-      printExecutionTime(arrayToSort, n, insertionSort);
+      sortingAlgorithm = insertionSort;
+      break;
+    case 10:
+      sortingAlgorithm = selectionSort;
       break;
     default:
-      std::cout << "Algorithm number not valid" << std::endl;
+      break;
+  }
+
+  if (sortingAlgorithm == nullptr)
+  {
+    std::cout << "Algorithm number not valid" << std::endl;
+  }
+  else {
+    printExecutionTime(arrayToSort, n, sortingAlgorithm);
   }
 
   return 0;
@@ -135,6 +149,27 @@ void insertionSort(int v[], int n)
     }
 }
 
+// REQUIRES: None.
+// MODIFIES: v[]
+// EFFECTS:  Sorts v[] using selectionSort
+void selectionSort(int v[], int n)
+{
+    int minimo = 0;
+    int temp;
+
+    for(int i = 0; i < n-1; i++)
+    {
+        minimo = i;
+        for(int j = i + 1; j < n; j++)
+        {
+            if (v[minimo] > v[j])
+                minimo = j;
+        }
+        temp = v[minimo];
+        v[minimo] = v[i];
+        v[i] = temp;
+    }
+}
 // REQUIRES: None.
 // MODIFIES: None.
 // EFFECTS: Displays the time before and after executing a function.
