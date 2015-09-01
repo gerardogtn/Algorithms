@@ -1,12 +1,8 @@
-// TODO: InsertionSort
 // TODO: BucketSort
-// TODO: CountingSort
-// TODO: MergeSort
 // TODO: BinaryTreeSort
 // TODO: RadixSort
 // TODO: ShellSort
 // TODO: HeapSort
-// TODO: QuickSort
 
 #include <iostream>
 
@@ -23,61 +19,9 @@ int partition(int v[], int lowerBound, int upperBound);
 void mergeSort(int v[], int n);
 void mergeSort(int v[], int l, int n, int N);
 void merge(int v[], int l, int m, int n, int N);
+void countingSort(int v[], int n);
+int getMaxValue(int v[], int n);
 
-
-int main(int argc, const char * argv[])
-{
-  int n = getArraySize();
-  int arrayToSort[n];
-  int algorithm = getAlgorithmNumber();
-
-  addNRandomElements(arrayToSort, n);
-
-  void (*sortingAlgorithm)(int *, int) = nullptr;
-
-  switch (algorithm) {
-    case 1:
-      sortingAlgorithm = bubbleSort;
-      break;
-    case 2:
-      break;
-    case 3:
-      sortingAlgorithm = insertionSort;
-      break;
-    case 4:
-      break;
-    case 5:
-      break;
-    case 6:
-      sortingAlgorithm = mergeSort;
-      break;
-    case 7:
-      break;
-    case 8:
-      break;
-    case 9:
-      break;
-    case 10:
-      sortingAlgorithm = selectionSort;
-      break;
-    case 11:
-      break;
-    case 12:
-      sortingAlgorithm = quickSort;
-    default:
-      break;
-  }
-
-  if (sortingAlgorithm == nullptr)
-  {
-    std::cout << "Algorithm number not valid" << std::endl;
-  }
-  else {
-    printExecutionTime(arrayToSort, n, sortingAlgorithm);
-  }
-
-  return 0;
-}
 
 // REQUIRES: None.
 // MODIFIES: None.
@@ -126,7 +70,6 @@ void addNRandomElements(int array[], int n)
   {
       array[i] = rand() % 100;
   }
-
 }
 
 
@@ -266,6 +209,64 @@ void merge(int v[], int l, int m, int n, int N)
             v[k] = aux[j--];
         }
     }
+}
+
+// REQUIRES: None.
+// MODIFIES: v[]
+// EFFECTS: Sorts v[] using radixSort
+void radixSort(int v[], int n, int d)
+{
+
+}
+
+void countingSort(int v[], int n)
+{
+  int max = v[0];
+
+  for (int i = 1; i < n; i++)
+  {
+    max = v[i] > max ? v[i] : max;
+  }
+
+  int * count = new int[max + 1];
+  int * output = new int[n];
+
+  for (int i = 0; i < n; i++)
+  {
+    count[v[i]]++;
+  }
+
+  for (int i = 1; i <= max; i++)
+  {
+    count[i] = count[i] + count[i -1];
+  }
+
+  for (int i = n - 1; i >= 0; i--)
+  {
+    output[--count[v[i]]] = v[i];
+  }
+
+  delete count;
+
+  for (int i = 0; i < n; i++)
+  {
+    v[i] = output[i];
+  }
+
+  delete output;
+}
+
+int getMaxValue(int v[], int n)
+{
+  int maxValue = v[0];
+  for (int i = 1; i < n; i++)
+  {
+    if (v[i] > maxValue)
+    {
+      maxValue = v[i];
+    }
+  }
+  return maxValue;
 }
 
 // REQUIRES: None.
