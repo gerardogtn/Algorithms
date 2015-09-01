@@ -9,7 +9,7 @@ int main(int argc, const char * argv[])
   int * arrayToSort = new int[n];
   addNRandomElements(arrayToSort, n);
   printArray(arrayToSort, n);
-  countingSort(arrayToSort, n);
+  heapSort(arrayToSort, n);
   std::cout  << std::endl;
   printArray(arrayToSort, n);
   delete arrayToSort;
