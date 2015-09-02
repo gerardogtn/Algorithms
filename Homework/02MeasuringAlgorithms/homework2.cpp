@@ -1,5 +1,8 @@
+
 #include <iostream>
 #include "sortingAlgorithms.h"
+
+int getAlgorithmNumber();
 
 int main(int argc, const char * argv[])
 {
@@ -56,4 +59,29 @@ int main(int argc, const char * argv[])
   }
 
   return 0;
+}
+
+// REQUIRES: None.
+// MODIFIES: None.
+// EFFECTS: Shows the user the algorithm options and returns the integer
+// representing the selected algorithm.
+int getAlgorithmNumber()
+{
+  std:: cout << "Select the algorithm type: " << std::endl;
+  std:: cout << "1 BubbleSort" << std::endl;
+  std:: cout << "2 CocktailSort" << std::endl;
+  std:: cout << "3 InsertionSort" << std::endl;
+  std:: cout << "4 BucketSort" << std::endl;
+  std:: cout << "5 CountingSort" << std::endl;
+  std:: cout << "6 MergeSort" << std::endl;
+  std:: cout << "7 BinaryTreeSort" << std::endl;
+  std:: cout << "8 RadixSort" << std::endl;
+  std:: cout << "9 ShellSort" << std::endl;
+  std:: cout << "10 SelectionSort" << std::endl;
+  std:: cout << "11 HeapSort" << std::endl;
+  std:: cout << "12 QuickSort" << std::endl;
+
+  int n;
+  std::cin >> n;
+  return n;
 }
