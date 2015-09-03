@@ -10,6 +10,7 @@
 #define BinaryTree_BinaryTree_h
 
 #include "BNode.h"
+#include <list>
 
 namespace vcn {
 
@@ -33,11 +34,17 @@ namespace vcn {
         bool insert(BNode<T> * parent, T value);
         bool insert(BNode<T> * parent, BNode<T> * value);
 
+        void insertOrder(T item);
+        void insertOrder(BNode<T> * parent, BNode<T> * item);
+
         void preOrder() const;
         void preOrder(BNode<T> * node) const;
 
         void inOrder() const;
         void inOrder(BNode<T> * node) const;
+
+        void toInOrderArray(T * array, int arraySize);
+        void toInOrderArray(BNode<T> * node, T * array, int arraySize, int & i);
 
         void postOrder() const;
         void postOrder(BNode<T> * node) const;
@@ -95,6 +102,51 @@ namespace vcn {
         else {
             root = node;
         }
+    }
+
+    template <class T>
+    void BinaryTree<T>::insertOrder(T item)
+    {
+      BNode<T> * node = new BNode<T>(item);
+      insertOrder(this->root, node);
+    }
+
+    template <class T>
+    void BinaryTree<T>::insertOrder(BNode<T> * parent, BNode<T> * item)
+    {
+      if (empty())
+      {
+        setRoot(item);
+      }
+      else
+      {
+        if(item->getInfo() < parent->getInfo())
+        {
+
+          if (parent->getLeft() == nullptr)
+          {
+            parent->setLeft(item);
+            item->setParent(parent);
+          }
+          else
+          {
+          insertOrder(parent->getLeft(), item);
+          }
+        }
+        else
+        {
+          if (parent->getRight() == nullptr)
+          {
+            parent->setRight(item);
+            item->setParent(parent);
+          }
+          else
+          {
+            insertOrder(parent->getRight(), item);
+          }
+        }
+      }
+
     }
 
     template <class T>
@@ -173,6 +225,32 @@ namespace vcn {
             /* Invocar al hijo derecho */
             inOrder(node->getRight());
         }
+    }
+
+    // REQUIRES: arraySize is size of array.
+    // MODIFIES: array.
+    // EFFECTS: Returns the array representation of the tree in inorder.
+    template <class T>
+    void BinaryTree<T>::toInOrderArray(T * array, int arraySize)
+    {
+      int i = 0;
+      toInOrderArray(root, array, arraySize, i);
+    }
+
+    // REQUIRES: arraySize is the size of the array.
+    // MODIFIES: array.
+    // EFFECTS: Adds the tree's elements to array in inorder.
+    template <class T>
+    void BinaryTree<T>::toInOrderArray(BNode<T> * node, T * array,
+       int arraySize, int & i)
+    {
+      if (node)
+      {
+        toInOrderArray(node->getLeft(), array, arraySize, i);
+        array[i] = node->getInfo();
+        i++;
+        toInOrderArray(node->getRight(), array, arraySize, i);
+      }
     }
 
     template <class T>
