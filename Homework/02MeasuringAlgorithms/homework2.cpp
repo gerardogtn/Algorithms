@@ -2,60 +2,43 @@
 #include <iostream>
 #include "sortingAlgorithms.h"
 
+typedef void (*sortingAlgorithm)(int *, int);
+
 int getAlgorithmNumber();
+sortingAlgorithm getAlgorithm(int algorithm);
+
 
 int main(int argc, const char * argv[])
 {
   int n = getArraySize();
   int arrayToSort[n];
-  int algorithm = getAlgorithmNumber();
 
-  addNRandomElements(arrayToSort, n);
+  std::string functionNames[12] = {"bubbleSort",
+    "cocktailSort",
+    "insertionSort",
+    "bucketSort",
+    "countingSort",
+    "mergeSort",
+    "binaryTreeSort",
+    "radixSort",
+    "shellSort",
+    "selectionSort",
+    "heapSort",
+    "quickSort"};
 
-  void (*sortingAlgorithm)(int *, int) = nullptr;
-
-  switch (algorithm) {
-    case 1:
-      sortingAlgorithm = bubbleSort;
-      break;
-    case 2:
-      sortingAlgorithm = cocktailSort;
-      break;
-    case 3:
-      sortingAlgorithm = insertionSort;
-      break;
-    case 4:
-      break;
-    case 5:
-      sortingAlgorithm = countingSort;
-      break;
-    case 6:
-      sortingAlgorithm = mergeSort;
-      break;
-    case 7:
-      break;
-    case 8:
-      break;
-    case 9:
-      break;
-    case 10:
-      sortingAlgorithm = selectionSort;
-      break;
-    case 11:
-      sortingAlgorithm = heapSort;
-      break;
-    case 12:
-      sortingAlgorithm = quickSort;
-    default:
-      break;
-  }
-
-  if (sortingAlgorithm == nullptr)
+  for (int i = 0; i < 12; i++)
   {
-    std::cout << "Algorithm number not valid" << std::endl;
-  }
-  else {
-    printExecutionTime(arrayToSort, n, sortingAlgorithm);
+    addNRandomElements(arrayToSort, n);
+    void (*sortingFunction)(int *, int) = nullptr;
+    sortingFunction = getAlgorithm(i + 1);
+    if (sortingFunction == nullptr)
+    {
+      std::cout << "Algorithm number not valid" << std::endl;
+    }
+    else {
+      std:: cout << functionNames[i];
+      printExecutionTime(arrayToSort, n, sortingFunction);
+    }
   }
 
   return 0;
@@ -84,4 +67,50 @@ int getAlgorithmNumber()
   int n;
   std::cin >> n;
   return n;
+}
+
+sortingAlgorithm getAlgorithm(int algorithm)
+{
+  switch (algorithm) {
+    case 1:
+      return bubbleSort;
+      break;
+    case 2:
+      return cocktailSort;
+      break;
+    case 3:
+      return insertionSort;
+      break;
+    case 4:
+      return bucketSort;
+      break;
+    case 5:
+      return countingSort;
+      break;
+    case 6:
+      return mergeSort;
+      break;
+    case 7:
+      return binaryTreeSort;
+      break;
+    case 8:
+      return radixSort;
+      break;
+    case 9:
+      return shellSort;
+      break;
+    case 10:
+      return selectionSort;
+      break;
+    case 11:
+      return heapSort;
+      break;
+    case 12:
+      return quickSort;
+      break;
+    default:
+      return nullptr;
+      break;
+  }
+  return nullptr;
 }
