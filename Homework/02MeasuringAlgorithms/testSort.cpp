@@ -9,7 +9,7 @@ int main(int argc, const char * argv[])
   int * arrayToSort = new int[n];
   addNRandomElements(arrayToSort, n);
   printArray(arrayToSort, n);
-  cocktailSort(arrayToSort, n);
+  binaryTreeSort(arrayToSort, n);
   std::cout  << std::endl;
   printArray(arrayToSort, n);
   delete arrayToSort;
