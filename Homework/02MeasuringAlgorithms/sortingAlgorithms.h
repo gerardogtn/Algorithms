@@ -1,9 +1,9 @@
 // TODO: BucketSort
 // TODO: BinaryTreeSort
-// TODO: RadixSort
-// TODO: ShellSort
 
 #include <iostream>
+#include <chrono>
+#include "BinaryTree.h"
 
 int getArraySize();
 void addNRandomElements(int array[], int n);
@@ -22,6 +22,9 @@ int getMaxValue(int v[], int n);
 void heapSort(int numbers[], int array_size);
 void siftDown(int numbers[], int root, int bottom);
 void cocktailSort(int v[], int n);
+void radixSort(int v[], int n);
+void countSort(int v[], int n, int exp);
+int getMax(int v[], int n);
 
 
 // REQUIRES: None.
@@ -187,12 +190,58 @@ void merge(int v[], int l, int m, int n, int N)
     }
 }
 
-// REQUIRES: None.
-// MODIFIES: v[]
-// EFFECTS: Sorts v[] using radixSort
-void radixSort(int v[], int n, int d)
+int getMax(int v[], int n)
 {
 
+    int max = v[0];
+
+    for(int i=1; i<n; i++)
+    {
+        if(v[i]>max)
+        {
+            max = v[i];
+        }
+    }
+
+    return max;
+}
+
+void countSort(int v[], int n, int exp)
+{
+    int output[n];
+    int count[10] = {0};
+
+
+    for(int i=0; i<n; i++)
+    {
+        count[(v[i]/exp)%10]++;
+    }
+
+    for(int i=1; i<10;i++)
+    {
+        count[i]+=count[i-1];
+    }
+
+    for (int i = n-1; i>=0; i--)
+    {
+        output[count[( v[i]/exp ) %10 ] -1] = v[i];
+        count[(v[i]/exp)%10]--;
+    }
+
+    for(int i=0; i < n; i++)
+    {
+        v[i]=output[i];
+    }
+}
+
+void radixSort(int v[], int n)
+{
+    int m = getMax(v, n);
+
+    for(int exp = 1; m/exp>0; exp*=10)
+    {
+        countSort(v, n, exp);
+    }
 }
 
 void countingSort(int v[], int n)
@@ -319,9 +368,65 @@ int getMaxValue(int v[], int n)
   return maxValue;
 }
 
+
 void shellSort(int v[], int n)
 {
+    int temp;
+
+    for(int gap = n/2; gap > 0; gap /= 2)
+    {
+        for(int i=gap; i<n; i++)
+        {
+            for(int j=i-gap; j>=0 && v[j]>v[j+gap]; j-=gap)
+            {
+                temp = v[j];
+                v[j]= v[j+gap];
+                v[j+gap] = temp;
+            }
+        }
+    }
 }
+
+void binaryTreeSort(int v[], int n)
+{
+  vcn::BinaryTree<int> * tree = new vcn::BinaryTree<int>();
+
+  for (int i = 0; i < n; i++)
+  {
+    tree->insertOrder(v[i]);
+  }
+  
+  tree->toInOrderArray(v, n);
+  delete tree;
+}
+
+void bucketSort(int v[], const int n)
+{
+
+    int m = 10001;
+    int buckets[m];
+
+    for(int i=0; i< m; ++i)
+    {
+        buckets[i]=0;
+    }
+
+    for (int i = 0; i < n; ++i)
+    {
+        ++buckets[v[i]];
+    }
+
+    for (int i =0, j = 0; j < m; ++j)
+    {
+        for (int k = buckets[j]; k > 0; --k)
+        {
+            v[i++] = j;
+        }
+    }
+
+
+}
+
 // REQUIRES: None.
 // MODIFIES: None.
 // EFFECTS: Displays the time before and after executing a function.
