@@ -27,5 +27,12 @@
 *.out
 *.app
 
-# PDFS
+# PDF files
 *.pdf
+
+# Office files
+*.pptx
+*.docx
+*.xlsx
+*.numbers
+*.pages
