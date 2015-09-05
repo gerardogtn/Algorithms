@@ -53,7 +53,44 @@ int main(int argc, const char * argv[])
   std::cout << "Balance Factor, elemento 9: " << bst->getBalanceFactor(nine)<< std::endl;
   std::cout << "Balance Factor, elemento 10: " << bst->getBalanceFactor(ten)<< std::endl;
 
+  std::cout << (bst->isAvl() ? "Es avl" : "No es avl")<< std::endl;
   bst->clear();
+
+
+  std::cout << "\n \nArbol 2" << std::endl;
+
+  BinarySearchTree<int> * bst2 = new BinarySearchTree<int>();
+  BNode<int> * m_ten = new BNode<int>(10);
+  BNode<int> * m_six = new BNode<int>(6);
+  BNode<int> * m_four = new BNode<int>(4);
+  BNode<int> * m_twelve = new BNode<int>(12);
+  BNode<int> * m_eleven = new BNode<int>(11);
+  BNode<int> * m_thirteen = new BNode<int>(13);
+
+  bst2->insert(m_ten);
+  bst2->insert(m_six);
+  bst2->insert(m_four);
+  bst2->insert(m_twelve);
+  bst2->insert(m_thirteen);
+  bst2->insert(m_eleven);
+
+  std::cout << "Imprimiendo en orden ascendente" << std::endl;
+  bst2->inOrder();
+
+  std::cout << "Imprimiendo en orden descendente" << std::endl;
+  bst2->inverseInOrder();
+
+
+  std::cout << "=============== TEST BALANCE FACTOR ====================" << std::endl;
+  std::cout << "Balance Factor, elemento 10: " << bst2->getBalanceFactor(m_ten)<< std::endl;
+  std::cout << "Balance Factor, elemento 6: " << bst2->getBalanceFactor(m_six)<< std::endl;
+  std::cout << "Balance Factor, elemento 4: " << bst2->getBalanceFactor(m_four)<< std::endl;
+  std::cout << "Balance Factor, elemento 12: " << bst2->getBalanceFactor(m_twelve)<< std::endl;
+  std::cout << "Balance Factor, elemento 13: " << bst2->getBalanceFactor(m_thirteen)<< std::endl;
+  std::cout << "Balance Factor, elemento 11: " << bst2->getBalanceFactor(m_eleven)<< std::endl;
+
+  std::cout << (bst2->isAvl() ? "Es avl" : "No es avl")<< std::endl;
+  bst2->clear();
 
   return 0;
 }
