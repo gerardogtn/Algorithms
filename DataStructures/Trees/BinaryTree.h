@@ -23,31 +23,36 @@ public:
   BinaryTree() {}
   virtual ~BinaryTree();
 
-  bool empty();
+  virtual bool empty();
 
-  void clear();
-  void clear(BNode<T> * node);
+  virtual void clear();
+  virtual void clear(BNode<T> * node);
 
-  BNode<T> * getRoot() const;
-  void setRoot(BNode<T> * node);
+  virtual BNode<T> * getRoot() const;
+  virtual void setRoot(const T element);
+  virtual void setRoot(BNode<T> * node);
+  virtual bool isRoot(BNode<T> * node) const;
 
   bool insert(BNode<T> * parent, T value);
   bool insert(BNode<T> * parent, BNode<T> * value);
 
-  void insertOrder(T item);
-  void insertOrder(BNode<T> * parent, BNode<T> * item);
+  virtual void insertOrder(T item);
+  virtual void insertOrder(BNode<T> * parent, BNode<T> * item);
 
-  void preOrder() const;
-  void preOrder(BNode<T> * node) const;
+  virtual void preOrder() const;
+  virtual void preOrder(BNode<T> * node) const;
 
-  void inOrder() const;
-  void inOrder(BNode<T> * node) const;
+  virtual void inOrder() const;
+  virtual void inOrder(BNode<T> * node) const;
+
+  virtual void inverseInOrder() const;
+  virtual void inverseInOrder(BNode<T> * node) const;
 
   void toInOrderArray(T * array, int arraySize);
   void toInOrderArray(BNode<T> * node, T * array, int arraySize, int & i);
 
-  void postOrder() const;
-  void postOrder(BNode<T> * node) const;
+  virtual void postOrder() const;
+  virtual void postOrder(BNode<T> * node) const;
 
   void isLeaf() const;
   void isLeaf(BNode<T> * node) const;
@@ -89,6 +94,13 @@ template <class T>
 BNode<T> * BinaryTree<T>::getRoot() const
 {
   return root;
+}
+
+template <class T>
+void setRoot(const T element)
+{
+  BNode<T> * node = new BNode<T>(element);
+  setRoot(node);
 }
 
 template <class T>
@@ -227,6 +239,17 @@ void BinaryTree<T>::inOrder(BNode<T> * node) const
   }
 }
 
+template <class T>
+void BinaryTree<T>::inverseInOrder(BNode<T> * node) const
+{
+  if (node)
+  {
+    inverseInOrder(node->getRight());
+    std::cout << *node << std::endl;
+    inverseInOrder(node->getLeft());
+  }
+}
+
 // REQUIRES: arraySize is size of array.
 // MODIFIES: array.
 // EFFECTS: Returns the array representation of the tree in inorder.
@@ -299,5 +322,7 @@ void BinaryTree<T>::ancestors(BNode<T> * node) const
     ancestors(node->getParent());
   }
 }
+
+
 
 #endif
