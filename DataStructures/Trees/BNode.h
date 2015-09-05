@@ -6,7 +6,8 @@
 //  Copyright (c) 2015 Vicente Cubells Nonell. All rights reserved.
 //
 
-#ifndef BinaryTree_BNode_h
+#ifndef BNode_h
+#define BNode_h
 
 #include <iostream>
 
