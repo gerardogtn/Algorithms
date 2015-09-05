@@ -28,50 +28,51 @@ public:
   virtual void clear();
   virtual void clear(BNode<T> * node);
 
-  virtual BNode<T> * getRoot() const;
+  BNode<T> * getRoot() const;
   virtual void setRoot(const T element);
   virtual void setRoot(BNode<T> * node);
-  virtual bool isRoot(BNode<T> * node);
+  bool isRoot(BNode<T> * node);
 
   bool insert(BNode<T> * parent, const T value);
   bool insert(BNode<T> * parent, BNode<T> * value);
 
-  virtual void insertOrder(T item);
-  virtual void insertOrder(BNode<T> * item);
-  virtual void insertOrder(BNode<T> * parent, BNode<T> * item);
+  void insertOrder(T item);
+  void insertOrder(BNode<T> * item);
+  void insertOrder(BNode<T> * parent, BNode<T> * item);
 
-  virtual void preOrder() const;
-  virtual void preOrder(BNode<T> * node) const;
+  void preOrder() const;
+  void preOrder(BNode<T> * node) const;
 
-  virtual void inOrder() const;
-  virtual void inOrder(BNode<T> * node) const;
+  void inOrder() const;
+  void inOrder(BNode<T> * node) const;
 
-  virtual void inverseInOrder() const;
-  virtual void inverseInOrder(BNode<T> * node) const;
+  void inverseInOrder() const;
+  void inverseInOrder(BNode<T> * node) const;
 
   void toInOrderArray(T * array, int arraySize);
   void toInOrderArray(BNode<T> * node, T * array, int arraySize, int & i);
 
-  virtual void postOrder() const;
-  virtual void postOrder(BNode<T> * node) const;
+  void postOrder() const;
+  void postOrder(BNode<T> * node) const;
 
   void isLeaf() const;
   void isLeaf(BNode<T> * node) const;
 
   void ancestors(BNode<T> * node) const;
 
-  virtual int getHeight() const;
-  virtual int getHeight(BNode<T> * node) const ;
+  int getHeight() const;
+  int getHeight(BNode<T> * node) const ;
 
-  virtual int getDepth() const;
-  virtual int getDepth(BNode<T> * node) const;
+  int getDepth() const;
+  int getDepth(BNode<T> * node) const;
 
-  virtual int getLevel() const;
-  virtual int getLevel(BNode<T> * node) const;
+  int getLevel() const;
+  int getLevel(BNode<T> * node) const;
 
-  virtual int getBalanceFactor() const;
-  virtual int getBalanceFactor(BNode<T> * node) const ;
+  int getBalanceFactor() const;
+  int getBalanceFactor(BNode<T> * node) const ;
 
+  bool isAvl() const;
   bool isAvl(BNode<T> * node) const;
 
 };
@@ -366,18 +367,14 @@ int BinaryTree<T>::getHeight(BNode<T> * node) const
 {
   if (node == nullptr)
   {
-    return 0;
+    return -1;
   }
   else
   {
     int leftCount = getHeight(node->getLeft());
     int rightCount = getHeight(node->getRight());
 
-    if (leftCount == 0 && rightCount == 0)
-    {
-      return 0;
-    }
-    else if (leftCount <= rightCount)
+    if (leftCount <= rightCount)
     {
       return rightCount +1;
     }
@@ -385,25 +382,6 @@ int BinaryTree<T>::getHeight(BNode<T> * node) const
     {
       return leftCount +1;
     }
-  }
-}
-
-template <class T>
-int BinaryTree<T>::getDepth() const
-{
-  return getDepth(root);
-}
-
-template <class T>
-int BinaryTree<T>::getDepth(BNode<T> * node) const
-{
-  if (node == nullptr)
-  {
-    return 0;
-  }
-  else
-  {
-    return getDepth(node->getParent()) + 1;
   }
 }
 
@@ -416,7 +394,26 @@ int BinaryTree<T>::getLevel() const
 template <class T>
 int BinaryTree<T>::getLevel(BNode<T> * node) const
 {
-  return getDepth(node) +1;
+  if (node == nullptr)
+  {
+    return 0;
+  }
+  else
+  {
+    return getLevel(node->getParent()) + 1;
+  }
+}
+
+template <class T>
+int BinaryTree<T>::getDepth() const
+{
+  return getDepth(root);
+}
+
+template <class T>
+int BinaryTree<T>::getDepth(BNode<T> * node) const
+{
+  return getLevel(node) - 1;
 }
 
 template <class T>
@@ -432,17 +429,29 @@ int BinaryTree<T>::getBalanceFactor(BNode<T> * node) const
 }
 
 template <class T>
+bool BinaryTree<T>::isAvl() const
+{
+  return isAvl(root);
+}
+
+template <class T>
 bool BinaryTree<T>::isAvl(BNode<T> * node) const
 {
-  int factor = getBalanceFactor(node);
-  if (factor > 1 || factor < -1)
+  if (node)
   {
-    return false;
+    if (abs(getBalanceFactor(node)) > 1 )
+    {
+      return false;
+    }
+    return  isAvl(node->getRight()) && isAvl(node->getLeft());
   }
   else
   {
     return true;
   }
+
+
+
 }
 
 #endif
