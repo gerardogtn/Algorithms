@@ -7,19 +7,46 @@
 #include "BinaryTree.h"
 
 template<class T>
-class BinarySearchTree : public BinaryTree<T>{
+class BinarySearchTree : private BinaryTree<T>{
 
 protected:
   BNode<T> * root = nullptr;
 
 public:
-  BinarySearchTree() {};
+  BinarySearchTree();
   virtual ~BinarySearchTree();
+
+  bool insert(T item);
+  bool insert(BNode<T> * node);
+
   bool search(const T item) const;
   bool search(const T item, BNode<T> * node) const;
 
 };
 
+template <class T>
+BinarySearchTree<T>::BinarySearchTree() : BinaryTree<T>::BinaryTree()
+{
+
+}
+
+template <class T>
+BinarySearchTree<T>::~BinarySearchTree()
+{
+  this->clear();
+}
+
+template <class T>
+bool BinarySearchTree<T>::insert(T item)
+{
+  this->insertOrder(item);
+}
+
+template <class T>
+bool BinarySearchTree<T>::insert(BNode<T> * node)
+{
+  this->insertOrder(node);
+}
 
 template <class T>
 bool BinarySearchTree<T>::search(const T item) const
