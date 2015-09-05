@@ -331,7 +331,6 @@ void BinaryTree<T>::ancestors(BNode<T> * node) const
 }
 
 
-<<<<<<< HEAD
 template <class T>
 int BinaryTree<T>::getHeight(BNode<T> * node) const
 {
@@ -394,7 +393,5 @@ bool BinaryTree<T>::isAvl(BNode<T> * node) const
   }
 }
 
-=======
->>>>>>> 78b9919714a78936eb76b1829b11e30b1cc6152e
 
 #endif
