@@ -13,7 +13,8 @@ public:
   BinarySearchTree();
   virtual ~BinarySearchTree();
 
-  void insert(T item);
+  void insert(const T item);
+  void insert(BNode<T> * item);
 
   bool search(const T item) const;
   bool search(const T item, BNode<T> * node) const;
@@ -21,7 +22,7 @@ public:
 };
 
 template <class T>
-BinarySearchTree<T>::BinarySearchTree() : BinaryTree<T>::BinaryTree()
+BinarySearchTree<T>::BinarySearchTree() : BinaryTree<T>()
 {
 
 }
@@ -33,7 +34,13 @@ BinarySearchTree<T>::~BinarySearchTree()
 }
 
 template <class T>
-void BinarySearchTree<T>::insert(T item)
+void BinarySearchTree<T>::insert(const T item)
+{
+  this->insertOrder(item);
+}
+
+template <class T>
+void BinarySearchTree<T>::insert(BNode<T> * item)
 {
   this->insertOrder(item);
 }
