@@ -13,8 +13,8 @@ public:
   BinarySearchTree();
   virtual ~BinarySearchTree();
 
-  void insert(const T item);
-  void insert(BNode<T> * item);
+  virtual void insert(const T item);
+  virtual void insert(BNode<T> * item);
 
   bool search(const T item) const;
   bool search(const T item, BNode<T> * node) const;
