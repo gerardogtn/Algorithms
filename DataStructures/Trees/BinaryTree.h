@@ -54,6 +54,13 @@ public:
 
   void ancestors(BNode<T> * node) const;
 
+  int getHeight(BNode<T> * node) const ;
+  int getDepth(BNode<T> * node) const;
+  int getLevel(BNode<T> * node) const;
+  int getBalanceFactor(BNode<T> * node) const ;
+
+  bool isAvl(BNode<T> * node) const;
+
 };
 
 template <class T>
@@ -299,5 +306,69 @@ void BinaryTree<T>::ancestors(BNode<T> * node) const
     ancestors(node->getParent());
   }
 }
+
+
+template <class T>
+int BinaryTree<T>::getHeight(BNode<T> * node) const
+{
+  if (node == nullptr)
+  {
+    return 0;
+  }
+  else
+  {
+    int leftCount = getHeight(node->getLeft());
+    int rightCount = getHeight(node->getRight());
+
+    if (leftCount <= rightCount)
+    {
+      return rightCount +1;
+    }
+    else
+    {
+      return leftCount +1;
+    }
+  }
+}
+
+template <class T>
+int BinaryTree<T>::getDepth(BNode<T> * node) const
+{
+  if (node == nullptr)
+  {
+    return 0;
+  }
+  else
+  {
+    return getDepth(node->getParent()) + 1;
+  }
+}
+
+template <class T>
+int BinaryTree<T>::getLevel(BNode<T> * node) const
+{
+  return getDepth(node) +1;
+}
+
+template <class T>
+int BinaryTree<T>::getBalanceFactor(BNode<T> * node) const
+{
+  return (getHeight(node->getRight())-getHeight(node->getLeft()));
+}
+
+template <class T>
+bool BinaryTree<T>::isAvl(BNode<T> * node) const
+{
+  int factor = getBalanceFactor(node);
+  if (factor > 1 || factor < -1)
+  {
+    return false;
+  }
+  else
+  {
+    return true;
+  }
+}
+
 
 #endif
