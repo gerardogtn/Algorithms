@@ -7,17 +7,13 @@
 #include "BinaryTree.h"
 
 template<class T>
-class BinarySearchTree : private BinaryTree<T>{
-
-protected:
-  BNode<T> * root = nullptr;
+class BinarySearchTree : public BinaryTree<T>{
 
 public:
   BinarySearchTree();
   virtual ~BinarySearchTree();
 
-  bool insert(T item);
-  bool insert(BNode<T> * node);
+  void insert(T item);
 
   bool search(const T item) const;
   bool search(const T item, BNode<T> * node) const;
@@ -37,21 +33,16 @@ BinarySearchTree<T>::~BinarySearchTree()
 }
 
 template <class T>
-bool BinarySearchTree<T>::insert(T item)
+void BinarySearchTree<T>::insert(T item)
 {
   this->insertOrder(item);
 }
 
-template <class T>
-bool BinarySearchTree<T>::insert(BNode<T> * node)
-{
-  this->insertOrder(node);
-}
 
 template <class T>
 bool BinarySearchTree<T>::search(const T item) const
 {
-  return search(item, root);
+  return search(item, BinaryTree<T>::root);
 }
 
 template <class T>
@@ -63,11 +54,11 @@ bool BinarySearchTree<T>::search(const T item, BNode<T> * node) const
   }
   else {
     T nodeValue = node->getInfo();
-    if (nodeValue == item)
+    if (item == nodeValue)
     {
       return true;
     }
-    else if (nodeValue < item )
+    else if (item < nodeValue)
     {
       return search(item, node->getLeft());
     }

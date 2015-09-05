@@ -31,7 +31,7 @@ public:
   virtual BNode<T> * getRoot() const;
   virtual void setRoot(const T element);
   virtual void setRoot(BNode<T> * node);
-  virtual bool isRoot(BNode<T> * node) const;
+  virtual bool isRoot(BNode<T> * node);
 
   bool insert(BNode<T> * parent, T value);
   bool insert(BNode<T> * parent, BNode<T> * value);
@@ -97,7 +97,7 @@ BNode<T> * BinaryTree<T>::getRoot() const
 }
 
 template <class T>
-void setRoot(const T element)
+void BinaryTree<T>::setRoot(const T element)
 {
   BNode<T> * node = new BNode<T>(element);
   setRoot(node);
@@ -114,6 +114,11 @@ void BinaryTree<T>::setRoot(BNode<T> * node)
   else {
     root = node;
   }
+}
+
+template <class T>
+bool BinaryTree<T>::isRoot(BNode<T> * node){
+  return node == this->root;
 }
 
 template <class T>
@@ -240,6 +245,12 @@ void BinaryTree<T>::inOrder(BNode<T> * node) const
 }
 
 template <class T>
+void BinaryTree<T>::inverseInOrder() const
+{
+  inverseInOrder(root);
+}
+
+template <class T>
 void BinaryTree<T>::inverseInOrder(BNode<T> * node) const
 {
   if (node)
@@ -322,7 +333,6 @@ void BinaryTree<T>::ancestors(BNode<T> * node) const
     ancestors(node->getParent());
   }
 }
-
 
 
 #endif
