@@ -15,7 +15,8 @@
 
 template <class T>
 class BinaryTree {
-private:
+
+protected:
   BNode<T> * root = nullptr;
 
 public:
@@ -52,9 +53,6 @@ public:
   void isLeaf(BNode<T> * node) const;
 
   void ancestors(BNode<T> * node) const;
-
-  bool search(const T item) const;
-  bool search(const T item, BNode<T> * node) const;
 
 };
 
@@ -301,35 +299,5 @@ void BinaryTree<T>::ancestors(BNode<T> * node) const
     ancestors(node->getParent());
   }
 }
-
-template <class T>
-bool BinaryTree<T>::search(const T item) const
-{
-  return search(item, root);
-}
-
-template <class T>
-bool BinaryTree<T>::search(const T item, BNode<T> * node) const
-{
-  if (node == nullptr)
-  {
-    return false;
-  }
-  else {
-    T nodeValue = node->getInfo();
-    if (nodeValue == item)
-    {
-      return true;
-    }
-    else if (nodeValue < item )
-    {
-      return search(item, node->getLeft());
-    }
-    else {
-      return search(item, node->getRight());
-    }
-  }
-}
-
 
 #endif
