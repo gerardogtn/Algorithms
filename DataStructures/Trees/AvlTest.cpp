@@ -16,19 +16,38 @@ int main (int argc, const char * argv[])
   BNode<int> * m_fifteen = new BNode<int>(15);
 
 
-  avlt->insert(m_fifteen);
-  avlt->insert(m_thirteen);
-  avlt->insert(m_twelve);
-  avlt->insert(m_eleven);
   avlt->insert(m_ten);
-  avlt->insert(m_six);
-  avlt->insert(m_four);
-  avlt->insert(m_three);
   avlt->insert(m_two);
+  avlt->insert(m_twelve);
+  avlt->insert(m_four);
+
+
+  avlt->insert(m_six);
+  std::cout << "HOLAAAA" << std::endl;
+  avlt->insert(m_thirteen);
+  std::cout << "hola" << std::endl;
+  avlt->insert(m_eleven);
+
+  avlt->insert(m_fifteen);
+  avlt->insert(m_three);
+
+
+  // avlt->insertTest(2);
+  // avlt->insertTest(3);
+  // avlt->insertTest(4);
+  // avlt->insertTest(6);
+  // avlt->insertTest(10);
+  // avlt->insertTest(11);
+  // avlt->insertTest(12);
+  // avlt->insertTest(13);
+  // avlt->insertTest(15);
 
 
   std::cout << "Imprimiendo en orden ascendente" << std::endl;
   avlt->inOrder();
+
+  std::cout << "/* message */" << std::endl;
+  avlt->inOrder(m_ten);
 
   std::cout << "=============== TEST BALANCE FACTOR ====================" << std::endl;
   std::cout << "Balance Factor, elemento 2: " << avlt->getBalanceFactor(m_two)<< std::endl;
@@ -42,7 +61,7 @@ int main (int argc, const char * argv[])
   std::cout << "Balance Factor, elemento 15: " << avlt->getBalanceFactor(m_fifteen)<< std::endl;
 
 
-  std::cout << "Eliminando el 11: " << std::endl;
+  std::cout << "Eliminando el 10: " << std::endl;
   avlt->remove(m_ten);
 
   avlt->inOrder();
@@ -50,6 +69,8 @@ int main (int argc, const char * argv[])
   std::cout << "La raiz es: " << *avlt->getRoot() << std::endl;
 
   std::cout << (avlt->isAvl() ? "Es avl" : "No es avl")<< std::endl;
+
+  avlt->prettyPrint(avlt->getRoot(),0);
 
   //Este celar hace que salga un segmentation fault, solución en proceso
   //avlt->clear();
