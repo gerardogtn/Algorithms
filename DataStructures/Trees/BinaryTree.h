@@ -31,6 +31,7 @@ public:
   BNode<T> * getRoot() const;
   virtual void setRoot(const T element);
   virtual void setRoot(BNode<T> * node);
+  void forceSetRoot(BNode<T> * node);
   bool isRoot(BNode<T> * node);
 
   bool insert(BNode<T> * parent, const T value);
@@ -136,6 +137,12 @@ void BinaryTree<T>::setRoot(BNode<T> * node)
   else {
     root = node;
   }
+}
+
+template <class T>
+void BinaryTree<T>::forceSetRoot(BNode<T> * node)
+{
+  root = node;
 }
 
 template <class T>
