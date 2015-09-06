@@ -12,7 +12,7 @@ public:
 
   BNode<T> * rotateright(BNode<T> * node);
   BNode<T> * rotateleft(BNode<T> * node);
-  BNode<T> * balance(BNode<T> * p);
+  void balance(BNode<T> * p);
 
   virtual void insert(const T item);
   virtual void insert(BNode<T> * item);
@@ -32,37 +32,74 @@ AvlTree<T>::~AvlTree()
 template <class T>
 BNode<T>* AvlTree<T>::rotateright(BNode<T> * node)
 {
-    BNode<T> * other = node->getLeft();
-    node->setLeft(other->getRight());
-    other->setRight(node);
-    return other;
+  BNode<T> * other = BinaryTree<T>::copy(node->getParent());
+  if (BinaryTree<T>::isRoot(node->getParent()))
+  {
+    node->setParent(other->getParent());
+    other->setParent(node);
+    node->setRight(other);
+    BinaryTree<T>::setRoot(node);
+    std::cout << "Mensaje de Debug" << std::endl;
+  }
+  else
+  {
+    node->setParent(other->getParent());
+    other->setParent(node);
+    node->setRight(other);
+  }
+
+  return other;
 }
 
 template <class T>
 BNode<T>* AvlTree<T>::rotateleft(BNode<T> * node)
 {
-    BNode<T> * other = node->getRight();
-    node->setRight(other->getLeft());
-    other->setLeft(node);
-    return other;
+  BNode<T> * other = BinaryTree<T>::copy(node->getParent());
+  if (BinaryTree<T>::isRoot(node->getParent()))
+  {
+    node->setParent(other->getParent());
+    other->setParent(node);
+    node->setLeft(other);
+    BinaryTree<T>::setRoot(node);
+    std::cout << "Mensaje de Debug" << std::endl;
+  }
+  else
+  {
+    node->setParent(other->getParent());
+    other->setParent(node);
+    node->setLeft(other);
+  }
+
+  return other;
 }
 
+// REQUIRES: None.
+// MODIFIES: this.
+// EFFECTS: If balanceFactor == 2 then rotates left, and
+// calls again to verify balance. Else if balanceFactor
+// == -2 then rotates right and calls again to verify balance.
+// Else nothing.
+// SHORT: Balances tree from bottom up.
 template <class T>
-BNode<T> * AvlTree<T>::balance(BNode<T> * node) // balancing the p node
+void AvlTree<T>::balance(BNode<T> * node)
 {
-  if( BinaryTree<T>::getBalanceFactor(node)==2 )
+  if (!node) return;
+  if(BinaryTree<T>::getBalanceFactor(node->getParent()) == 2)
   {
-      if( BinaryTree<T>::getBalanceFactor(node->getRight()) < 0 )
-          node->setRight(rotateright(node->getRight()));
-       return rotateleft(node);
+    // if(BinaryTree<T>::getBalanceFactor(node->getRight()) < 0)
+    // {
+    //   node->setRight(rotateright(node->getRight()));
+    // }
+    rotateleft(node);
   }
-  if( BinaryTree<T>::getBalanceFactor(node)==-2 )
+  if( BinaryTree<T>::getBalanceFactor(node->getParent()) == -2)
   {
-      if( BinaryTree<T>::getBalanceFactor(node->getLeft()) > 0  )
-          node->setLeft(rotateleft(node->getLeft()));
-       return rotateright(node);
+    // if( BinaryTree<T>::getBalanceFactor(node->getLeft()) > 0)
+    // {
+    //   node->setLeft(rotateleft(node->getLeft()));
+    // }
+    rotateright(node);
   }
-  return node;
 }
 
 template <class T>
@@ -76,7 +113,7 @@ template <class T>
 void AvlTree<T>::insert(BNode<T> * item)
 {
   BinarySearchTree<T>::insert(item);
-  this->balance(BinaryTree<T>::root);
+  this->balance(item->getParent());
 }
 
 

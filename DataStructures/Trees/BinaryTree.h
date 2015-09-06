@@ -75,6 +75,9 @@ public:
   bool isAvl() const;
   bool isAvl(BNode<T> * node) const;
 
+  BinaryTree<T> * copy() const;
+  BNode<T> * copy (const BNode<T> * node) const;
+
 };
 
 template <class T>
@@ -425,7 +428,11 @@ int BinaryTree<T>::getBalanceFactor() const
 template <class T>
 int BinaryTree<T>::getBalanceFactor(BNode<T> * node) const
 {
-  return getHeight(node->getRight()) - getHeight(node->getLeft());
+  if (node)
+  {
+    return getHeight(node->getRight()) - getHeight(node->getLeft());
+  }
+  return 0;
 }
 
 template <class T>
@@ -449,9 +456,34 @@ bool BinaryTree<T>::isAvl(BNode<T> * node) const
   {
     return true;
   }
+}
 
+// REQUIRES: None.
+// MODIFIES: None
+//  EFFECTS: Copies a binary tree.
+template <class T>
+BinaryTree<T> * BinaryTree<T>::copy() const{
+  BinaryTree<T> * output = new BinaryTree<T>();
+  BNode<T> * node = new BNode<T>();
+  node = copy(this->getRoot());
+  output->insert(nullptr, node);
+  return output;
+}
 
-
+// REQUIRES: None.
+// MODIFIES: None
+//  EFFECTS: Copies the root node of a tree to output.
+// Copies the root of a tree.
+template <class T>
+BNode<T> * BinaryTree<T>::copy(const BNode<T> * node) const{
+  if (node){
+    BNode<T> * output = new BNode<T>();
+    output->setInfo(node->getInfo());
+    output->setRight(copy(node->getRight()));
+    output->setLeft(copy(node->getLeft()));
+    return output;
+  }
+  return nullptr;
 }
 
 #endif

@@ -22,13 +22,13 @@ int main (int argc, const char * argv[])
   avlt->insert(m_six);
   avlt->insert(m_ten);
   avlt->insert(m_eleven);
-  avlt->insert(m_twelve);
-  avlt->insert(m_thirteen);
-  avlt->insert(m_fifteen);
+  // avlt->insert(m_twelve);
+  // avlt->insert(m_thirteen);
+  // avlt->insert(m_fifteen);
 
-  // std::cout << "Imprimiendo en orden ascendente" << std::endl;
-  // avlt->inOrder();
-  // 
+  std::cout << "Imprimiendo en orden ascendente" << std::endl;
+  avlt->inOrder();
+  //
   // std::cout << "Imprimiendo en orden descendente" << std::endl;
   // avlt->inverseInOrder();
 
@@ -43,8 +43,11 @@ int main (int argc, const char * argv[])
   std::cout << "Balance Factor, elemento 13: " << avlt->getBalanceFactor(m_thirteen)<< std::endl;
   std::cout << "Balance Factor, elemento 15: " << avlt->getBalanceFactor(m_fifteen)<< std::endl;
 
+  std::cout << "La raiz es: " << *avlt->getRoot() << std::endl;
 
   std::cout << (avlt->isAvl() ? "Es avl" : "No es avl")<< std::endl;
+
+  avlt->clear();
 
   return 0;
 }
