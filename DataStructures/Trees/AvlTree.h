@@ -78,31 +78,16 @@ BNode<T>* AvlTree<T>::rotateleft(BNode<T> * node)
   return other;
 }
 
-// REQUIRES: None.
-// MODIFIES: this.
-// EFFECTS: If balanceFactor == 2 then rotates left, and
-// calls again to verify balance. Else if balanceFactor
-// == -2 then rotates right and calls again to verify balance.
-// Else nothing.
-// SHORT: Balances tree from bottom up.
 template <class T>
 void AvlTree<T>::balance(BNode<T> * node)
 {
   if (!node) return;
   if(BinaryTree<T>::getBalanceFactor(node->getParent()) == 2)
   {
-    // if(BinaryTree<T>::getBalanceFactor(node->getRight()) < 0)
-    // {
-    //   node->setRight(rotateright(node->getRight()));
-    // }
     rotateleft(node);
   }
   if( BinaryTree<T>::getBalanceFactor(node->getParent()) == -2)
   {
-    // if( BinaryTree<T>::getBalanceFactor(node->getLeft()) > 0)
-    // {
-    //   node->setLeft(rotateleft(node->getLeft()));
-    // }
     rotateright(node);
   }
   if(!this->isAvl())

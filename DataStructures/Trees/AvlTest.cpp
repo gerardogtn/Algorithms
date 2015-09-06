@@ -29,9 +29,6 @@ int main (int argc, const char * argv[])
 
   std::cout << "Imprimiendo en orden ascendente" << std::endl;
   avlt->inOrder();
-  //
-  // std::cout << "Imprimiendo en orden descendente" << std::endl;
-  // avlt->inverseInOrder();
 
   std::cout << "=============== TEST BALANCE FACTOR ====================" << std::endl;
   std::cout << "Balance Factor, elemento 2: " << avlt->getBalanceFactor(m_two)<< std::endl;
@@ -44,15 +41,13 @@ int main (int argc, const char * argv[])
   std::cout << "Balance Factor, elemento 13: " << avlt->getBalanceFactor(m_thirteen)<< std::endl;
   std::cout << "Balance Factor, elemento 15: " << avlt->getBalanceFactor(m_fifteen)<< std::endl;
 
-  // std::cout << "El padre de 3 es: " << *m_three->getParent() << std::endl;
-  // std::cout << "La izquierda de 3 es: " << *m_three->getLeft() << std::endl;
-  // std::cout << "La derecha de 3 es: " << m_three->getRight() << std::endl;
 
   std::cout << "La raiz es: " << *avlt->getRoot() << std::endl;
 
   std::cout << (avlt->isAvl() ? "Es avl" : "No es avl")<< std::endl;
 
-  // avlt->clear();
+  //Este celar hace que salga un segmentation fault, solución en proceso
+  //avlt->clear();
 
   return 0;
 }
