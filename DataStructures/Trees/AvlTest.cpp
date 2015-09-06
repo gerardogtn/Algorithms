@@ -42,6 +42,11 @@ int main (int argc, const char * argv[])
   std::cout << "Balance Factor, elemento 15: " << avlt->getBalanceFactor(m_fifteen)<< std::endl;
 
 
+  std::cout << "Eliminando el 11: " << std::endl;
+  avlt->remove(m_ten);
+
+  avlt->inOrder();
+
   std::cout << "La raiz es: " << *avlt->getRoot() << std::endl;
 
   std::cout << (avlt->isAvl() ? "Es avl" : "No es avl")<< std::endl;

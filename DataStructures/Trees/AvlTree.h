@@ -160,7 +160,7 @@ bool AvlTree<T>::remove(BNode<T> * item)
       next->setRight(rightChild);
       rightChild->setParent(next);
     }
-    item->clear();
+    delete item;
 
     balance(next);
   }

@@ -6,6 +6,10 @@
 //  Copyright (c) 2015 Vicente Cubells Nonell. All rights reserved.
 //
 
+//No hay un clear declarado
+
+
+
 #ifndef BNode_h
 #define BNode_h
 

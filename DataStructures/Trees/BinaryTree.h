@@ -500,11 +500,21 @@ BNode<T> * BinaryTree<T>::getMaxMin() const
 template <class T>
 BNode<T> * BinaryTree<T>::getMaxMin(BNode<T> * node) const
 {
-  BNode<T> * workingNode = node->getLeft();
-  while (workingNode != nullptr) {
-    workingNode = workingNode->getRight();
+  if (node != nullptr)
+  {
+    BNode<T> * workingNode = node->getLeft();
+    while (workingNode != nullptr)
+    {
+      workingNode = workingNode->getRight();
+    }
+    return workingNode;
   }
-  return workingNode;
+  else
+  {
+    return nullptr;
+  }
+
+
 }
 
 #endif

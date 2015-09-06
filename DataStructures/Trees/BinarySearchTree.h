@@ -1,5 +1,4 @@
 
-//
 
 #ifndef BinarySearchTree_h
 #define BinarySearchTree_h
@@ -58,7 +57,7 @@ bool BinarySearchTree<T>::search(const T item) const
 template <class T>
 bool BinarySearchTree<T>::search(const T item, BNode<T> * node) const
 {
-  BNode<T> * output = searchGetPosition(item, node);
+  BNode<T> * output = searchGetNode(item, node);
   if (output == nullptr)
   {
     return false;
@@ -72,7 +71,7 @@ bool BinarySearchTree<T>::search(const T item, BNode<T> * node) const
 template <class T>
 BNode<T> * BinarySearchTree<T>::searchGetNode(const T item) const
 {
-  return searchGetPosition(item, BinaryTree<T>::root);
+  return searchGetNode(item, BinaryTree<T>::root);
 }
 
 template <class T>
@@ -91,10 +90,10 @@ BNode<T> * BinarySearchTree<T>::searchGetNode(const T item, BNode<T> * node) con
     }
     else if (item < nodeValue)
     {
-      return search(item, node->getLeft());
+      return searchGetNode(item, node->getLeft());
     }
     else {
-      return search(item, node->getRight());
+      return searchGetNode(item, node->getRight());
     }
   }
 }
