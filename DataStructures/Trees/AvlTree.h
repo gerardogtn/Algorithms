@@ -35,25 +35,65 @@ AvlTree<T>::~AvlTree()
 template <class T>
 BNode<T>* AvlTree<T>::rotateright(BNode<T> * node)
 {
-  BNode<T> * other = node->getParent();
-  if (BinaryTree<T>::isRoot(other))
+  BNode<T> * pivot = node->getParent();
+  BNode<T> * temp = node->getRight();
+  bool isRoot = BinaryTree<T>::isRoot(pivot);
+
+  std::cout << "================ ANTES ==================" << std::endl;
+  std::cout << "Node es:" << *node << std::endl;
+  std::cout << "Hijo izquierdo node: " << *node->getLeft() << std::endl;
+  std::cout << "Hijo derecho node: " << node->getRight() << std::endl;
+  if (node->getParent())
   {
-    node->setParent(other->getParent());
-    other->setParent(node);
-    other->setLeft(node->getRight());
-    node->setRight(other);
-    BinaryTree<T>::setRoot(node);
+    std::cout << "Padre de node: " << *node->getParent() << std::endl;
+  }
+  else {
+    std::cout << "Padre de node: no tiene padre" << std::endl;
+  }
+
+
+  std::cout << "Pivot es:" << *pivot << std::endl;
+  std::cout << "Hijo izquierdo Pivot: " << *pivot->getLeft() << std::endl;
+  std::cout << "Hijo derecho Pivot: " << pivot->getRight() << std::endl;
+  std::cout << "Padre de Pivot: " << pivot->getParent() << std::endl;
+
+
+  node->setParent(pivot->getParent());
+  node->setRight(pivot);
+  pivot->setLeft(temp);
+  pivot->setParent(node);
+
+
+
+  if (isRoot)
+  {
+    BinaryTree<T>::forceSetRoot(node);
   }
   else
   {
-    node->setParent(other->getParent());
-    other->getParent()->setLeft(node);
-    other->setParent(node);
-    node->setRight(other);
-    other->setLeft(nullptr);
+    node->getParent()->setLeft(node);
   }
 
-  return other;
+  std::cout << "================ DESPUES ==================" << std::endl;
+  std::cout << "Node es:" << *node << std::endl;
+  std::cout << "Hijo izquierdo node: " << *node->getLeft() << std::endl;
+  std::cout << "Hijo derecho node: " << *node->getRight() << std::endl;
+  if (node->getParent())
+  {
+    std::cout << "Padre de node: " << *node->getParent() << std::endl;
+  }
+  else {
+    std::cout << "Padre de node: no tiene padre" << std::endl;
+  }
+
+  std::cout << "Pivot es:" << *pivot << std::endl;
+  std::cout << "Hijo izquierdo Pivot: " << pivot->getLeft() << std::endl;
+  std::cout << "Hijo derecho Pivot: " << pivot->getRight() << std::endl;
+  std::cout << "Padre de Pivot: " << *pivot->getParent() << std::endl;
+
+  std::cout << "Groot's left child: " << *BinaryTree<T>::getRoot()->getLeft() << std::endl;
+
+  return node;
 }
 
 template <class T>
