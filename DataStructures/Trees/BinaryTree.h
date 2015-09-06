@@ -78,6 +78,9 @@ public:
   BinaryTree<T> * copy() const;
   BNode<T> * copy (const BNode<T> * node) const;
 
+  BNode<T> * getMaxMin() const;
+  BNode<T> * getMaxMin(BNode<T> * node) const;
+
 };
 
 template <class T>
@@ -484,6 +487,24 @@ BNode<T> * BinaryTree<T>::copy(const BNode<T> * node) const{
     return output;
   }
   return nullptr;
+}
+
+
+template <class T>
+BNode<T> * BinaryTree<T>::getMaxMin() const
+{
+  return getMaxMin(root);
+}
+
+
+template <class T>
+BNode<T> * BinaryTree<T>::getMaxMin(BNode<T> * node) const
+{
+  BNode<T> * workingNode = node->getLeft();
+  while (workingNode != nullptr) {
+    workingNode = workingNode->getRight();
+  }
+  return workingNode;
 }
 
 #endif
