@@ -16,15 +16,16 @@ int main (int argc, const char * argv[])
   BNode<int> * m_fifteen = new BNode<int>(15);
 
 
-  avlt->insert(m_two);
-  avlt->insert(m_three);
-  avlt->insert(m_four);
-  avlt->insert(m_six);
-  avlt->insert(m_ten);
+  avlt->insert(m_fifteen);
+  avlt->insert(m_thirteen);
+  avlt->insert(m_twelve);
   avlt->insert(m_eleven);
-  // avlt->insert(m_twelve);
-  // avlt->insert(m_thirteen);
-  // avlt->insert(m_fifteen);
+  avlt->insert(m_ten);
+  avlt->insert(m_six);
+  avlt->insert(m_four);
+  avlt->insert(m_three);
+  avlt->insert(m_two);
+
 
   std::cout << "Imprimiendo en orden ascendente" << std::endl;
   avlt->inOrder();
@@ -43,11 +44,15 @@ int main (int argc, const char * argv[])
   std::cout << "Balance Factor, elemento 13: " << avlt->getBalanceFactor(m_thirteen)<< std::endl;
   std::cout << "Balance Factor, elemento 15: " << avlt->getBalanceFactor(m_fifteen)<< std::endl;
 
+  // std::cout << "El padre de 3 es: " << *m_three->getParent() << std::endl;
+  // std::cout << "La izquierda de 3 es: " << *m_three->getLeft() << std::endl;
+  // std::cout << "La derecha de 3 es: " << m_three->getRight() << std::endl;
+
   std::cout << "La raiz es: " << *avlt->getRoot() << std::endl;
 
   std::cout << (avlt->isAvl() ? "Es avl" : "No es avl")<< std::endl;
 
-  avlt->clear();
+  // avlt->clear();
 
   return 0;
 }

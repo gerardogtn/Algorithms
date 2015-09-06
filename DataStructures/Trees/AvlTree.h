@@ -32,20 +32,22 @@ AvlTree<T>::~AvlTree()
 template <class T>
 BNode<T>* AvlTree<T>::rotateright(BNode<T> * node)
 {
-  BNode<T> * other = BinaryTree<T>::copy(node->getParent());
-  if (BinaryTree<T>::isRoot(node->getParent()))
+  BNode<T> * other = node->getParent();
+  if (BinaryTree<T>::isRoot(other))
   {
     node->setParent(other->getParent());
     other->setParent(node);
+    other->setLeft(node->getRight());
     node->setRight(other);
     BinaryTree<T>::setRoot(node);
-    std::cout << "Mensaje de Debug" << std::endl;
   }
   else
   {
     node->setParent(other->getParent());
+    other->getParent()->setLeft(node);
     other->setParent(node);
     node->setRight(other);
+    other->setLeft(nullptr);
   }
 
   return other;
@@ -54,20 +56,23 @@ BNode<T>* AvlTree<T>::rotateright(BNode<T> * node)
 template <class T>
 BNode<T>* AvlTree<T>::rotateleft(BNode<T> * node)
 {
-  BNode<T> * other = BinaryTree<T>::copy(node->getParent());
-  if (BinaryTree<T>::isRoot(node->getParent()))
+  BNode<T> * other = node->getParent();
+  if (BinaryTree<T>::isRoot(other))
   {
     node->setParent(other->getParent());
     other->setParent(node);
+    other->setRight(node->getLeft());
     node->setLeft(other);
     BinaryTree<T>::setRoot(node);
-    std::cout << "Mensaje de Debug" << std::endl;
   }
   else
   {
     node->setParent(other->getParent());
+    other->getParent()->setRight(node);
     other->setParent(node);
     node->setLeft(other);
+    other->setRight(nullptr);
+
   }
 
   return other;
@@ -99,6 +104,10 @@ void AvlTree<T>::balance(BNode<T> * node)
     //   node->setLeft(rotateleft(node->getLeft()));
     // }
     rotateright(node);
+  }
+  if(!this->isAvl())
+  {
+    balance(node->getParent());
   }
 }
 
