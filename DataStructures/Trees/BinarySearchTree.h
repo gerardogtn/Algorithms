@@ -1,5 +1,4 @@
 
-//
 
 #ifndef BinarySearchTree_h
 #define BinarySearchTree_h
@@ -18,6 +17,9 @@ public:
 
   bool search(const T item) const;
   bool search(const T item, BNode<T> * node) const;
+  BNode<T> * searchGetNode(const T item) const;
+  BNode<T> * searchGetNode(const T item, BNode<T> * node) const;
+  BNode<T> * searchGetNode(BNode<T> * itemToDelete, BNode<T> * node) const;
 
 };
 
@@ -55,22 +57,66 @@ bool BinarySearchTree<T>::search(const T item) const
 template <class T>
 bool BinarySearchTree<T>::search(const T item, BNode<T> * node) const
 {
-  if (node == nullptr)
+  BNode<T> * output = searchGetNode(item, node);
+  if (output == nullptr)
   {
     return false;
   }
-  else {
+  else
+  {
+    return true;
+  }
+}
+
+template <class T>
+BNode<T> * BinarySearchTree<T>::searchGetNode(const T item) const
+{
+  return searchGetNode(item, BinaryTree<T>::root);
+}
+
+template <class T>
+BNode<T> * BinarySearchTree<T>::searchGetNode(const T item, BNode<T> * node) const
+{
+  if (node == nullptr)
+  {
+    return nullptr;
+  }
+  else
+  {
     T nodeValue = node->getInfo();
     if (item == nodeValue)
     {
-      return true;
+      return node;
     }
     else if (item < nodeValue)
     {
-      return search(item, node->getLeft());
+      return searchGetNode(item, node->getLeft());
     }
     else {
-      return search(item, node->getRight());
+      return searchGetNode(item, node->getRight());
+    }
+  }
+}
+
+template <class T>
+BNode<T> * BinarySearchTree<T>::searchGetNode(BNode<T> * itemToDelete, BNode<T> * node) const
+{
+  if (node == nullptr)
+  {
+    return nullptr;
+  }
+  else
+  {
+    if (itemToDelete == node)
+    {
+      return node;
+    }
+    else if (itemToDelete->getInfo() < node->getInfo())
+    {
+      return searchGetNode(itemToDelete, node->getLeft());
+    }
+    else {
+      return searchGetNode(itemToDelete, node->getRight());
     }
   }
 }
