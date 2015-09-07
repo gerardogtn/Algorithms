@@ -509,8 +509,9 @@ BNode<T> * BinaryTree<T>::getMaxMin(BNode<T> * node) const
 {
   if (node != nullptr)
   {
+
     BNode<T> * workingNode = node->getLeft();
-    while (workingNode != nullptr)
+    while (workingNode->getRight() != nullptr)
     {
       workingNode = workingNode->getRight();
     }

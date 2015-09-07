@@ -20,34 +20,15 @@ int main (int argc, const char * argv[])
   avlt->insert(m_two);
   avlt->insert(m_twelve);
   avlt->insert(m_four);
-
-
   avlt->insert(m_six);
-  std::cout << "HOLAAAA" << std::endl;
   avlt->insert(m_thirteen);
-  std::cout << "hola" << std::endl;
   avlt->insert(m_eleven);
-
   avlt->insert(m_fifteen);
   avlt->insert(m_three);
-
-
-  // avlt->insertTest(2);
-  // avlt->insertTest(3);
-  // avlt->insertTest(4);
-  // avlt->insertTest(6);
-  // avlt->insertTest(10);
-  // avlt->insertTest(11);
-  // avlt->insertTest(12);
-  // avlt->insertTest(13);
-  // avlt->insertTest(15);
-
 
   std::cout << "Imprimiendo en orden ascendente" << std::endl;
   avlt->inOrder();
 
-  std::cout << "/* message */" << std::endl;
-  avlt->inOrder(m_ten);
 
   std::cout << "=============== TEST BALANCE FACTOR ====================" << std::endl;
   std::cout << "Balance Factor, elemento 2: " << avlt->getBalanceFactor(m_two)<< std::endl;
@@ -61,8 +42,17 @@ int main (int argc, const char * argv[])
   std::cout << "Balance Factor, elemento 15: " << avlt->getBalanceFactor(m_fifteen)<< std::endl;
 
 
-  std::cout << "Eliminando el 10: " << std::endl;
-  avlt->remove(m_ten);
+  std::cout << "Eliminando el 4: " << std::endl;
+  avlt->removeNode(m_four);
+  std::cout << "4 eliminado!" << std::endl;
+
+  std::cout << "Eliminando el 2: " << std::endl;
+  avlt->removeNode(m_two);
+  std::cout << "2 eliminado!" << std::endl;
+
+  std::cout << "Eliminando el 3: " << std::endl;
+  avlt->removeNode(m_three);
+  std::cout << "3 eliminado!" << std::endl;
 
   avlt->inOrder();
 

@@ -5,6 +5,8 @@
 #include "BinarySearchTree.h"
 #include <iomanip>
 #include <iostream>
+#include <list>
+
 template <class T>
 class AvlTree : public BinarySearchTree<T>{
 
@@ -19,8 +21,8 @@ public:
   virtual void insert(const T item);
   virtual void insert(BNode<T> * item);
 
-  virtual bool remove(const T item);
-  virtual bool remove(BNode<T> * item);
+  // virtual bool removeNode(const T item);
+  virtual bool removeNode(BNode<T> * item);
   void prettyPrint(BNode<T> * node, int indent);
 
 };
@@ -125,59 +127,90 @@ void AvlTree<T>::insert(BNode<T> * item)
   this->balance(item->getParent());
 }
 
+// template <class T>
+// bool AvlTree<T>::removeNode(BNode<T> * item)
+// {
+//   BNode<T> * nodoABorrar = this->searchGetNode(item);
+//
+//   if (nodoABorrar == nullptr)
+//   {
+//     return false;
+//   }
+//   else
+//   {
+//     BNode<T> * padre = nodoABorrar->getParent();
+//     BNode<T> * derecho = nodoABorrar->getRight();
+//     BNode<T> * izquierdo = nodoABorrar->getLeft();
+//
+//     if (derecho==nullptr && izquierdo == nullptr)
+//     {
+//       delete nodoABorrar;
+//       return true;
+//     }
+//     else if (derecho == nullptr && izquierdo != nullptr)
+//     {
+//
+//     }
+//
+//   }
+//
+//
+// }
+
+
 // REQUIRES: None.
 // MODIFIES: this.
 // EFFECTS:  Returns true if the element was found and was deleted.
-template <class T>
-bool AvlTree<T>::remove(const T item)
-{
-  return remove(BinarySearchTree<T>::searchGetNode(item));
-}
+// template <class T>
+// bool AvlTree<T>::remove(const T item)
+// {
+//   return remove(BinarySearchTree<T>::searchGetNode(item));
+// }
 
 // REQUIRES: item is in Avl Tree
 // MODIFIES: this.
 // EFFECTS: Returns true if item was deleted.
 // INVARIANT: Avl is balanced.
 template <class T>
-bool AvlTree<T>::remove(BNode<T> * item)
+bool AvlTree<T>::removeNode(BNode<T> * item)
 {
-  if (item == nullptr)
-  {
-    return false;
-  }
-  else
-  {
+  if (item->isLeaf()) {
     BNode<T> * parent = item->getParent();
-    BNode<T> * leftChild = item->getLeft();
-    BNode<T> * rightChild = item->getRight();
-    BNode<T> * next = BinaryTree<T>::getMaxMin(item);
-    bool insertLeft = parent->getInfo() < item->getInfo();
-    if (insertLeft)
+    if (item->getInfo() < parent->getInfo())
     {
-      next->getParent()->setRight(next->getLeft());
-      next->setLeft(leftChild);
-      leftChild->setParent(next);
-      next->setParent(parent);
-      parent->setLeft(next);
-      next->setRight(rightChild);
-      rightChild->setParent(next);
+      parent->setLeft(nullptr);
     }
     else
     {
-      next->getParent()->setRight(next->getLeft());
-      next->setLeft(leftChild);
-      leftChild->setParent(next);
-      next->setParent(parent);
-      parent->setRight(next);
-      next->setRight(rightChild);
-      rightChild->setParent(next);
+      parent->setRight(nullptr);
     }
     delete item;
-
-    balance(next);
+    balance(parent);
+    return true;
+  }
+  else if (item->hasOneChild())
+  {
+    BNode<T> * child;
+    if (item->getRight() != nullptr)
+    {
+      child = item->getRight();
+      item->setRight(nullptr);
+    }
+    else
+    {
+      child = item->getLeft();
+      item->setLeft(nullptr);
+    }
+    item->setInfo(child->getInfo());
+    removeNode(child);
+  }
+  else
+  {
+    BNode<T> * maxMin = this->getMaxMin(item);
+    item->setInfo(maxMin->getInfo());
+    removeNode(maxMin);
   }
   return true;
-
 }
 
 template <class T>
@@ -199,5 +232,6 @@ void AvlTree<T>::prettyPrint(BNode<T> * p, int indent)
     }
   }
 }
+
 
 #endif

@@ -20,6 +20,7 @@ public:
   BNode<T> * searchGetNode(const T item) const;
   BNode<T> * searchGetNode(const T item, BNode<T> * node) const;
   BNode<T> * searchGetNode(BNode<T> * itemToDelete, BNode<T> * node) const;
+  BNode<T> * removeNode(BNode<T> * item);
 
 };
 
@@ -120,5 +121,66 @@ BNode<T> * BinarySearchTree<T>::searchGetNode(BNode<T> * itemToDelete, BNode<T> 
     }
   }
 }
+
+template <class T>
+BNode<T> * BinarySearchTree<T>::removeNode(BNode<T> * item)
+{
+  if(item)
+  {
+    if (item->isLeaf()) {
+      BNode<T> * parent = item->getParent();
+      if (item->getInfo() < parent->getInfo())
+      {
+        parent->setLeft(nullptr);
+      }
+      else
+      {
+        parent->setRight(nullptr);
+      }
+      delete item;
+      return parent;
+    }
+    bool isRoot =  this->isRoot(item);
+    BNode<T> * maxMin = this->getMaxMin(item);
+    BNode<T> * temp = maxMin->getLeft();
+    std::cout << *maxMin << std::endl;
+    maxMin->setParent(item->getParent());
+    maxMin->setLeft(item->getLeft());
+    item->getLeft()->setRight(temp);
+    if (temp)
+    {
+      temp->setParent(item->getLeft());
+    }
+    maxMin->setRight(item->getRight());
+    if (item->getRight())
+    {
+      maxMin->getRight()->setParent(maxMin);
+    }
+    if (item->getLeft())
+    {
+      maxMin->getLeft()->setParent(maxMin);
+    }
+    if(isRoot)
+    {
+      this->forceSetRoot(maxMin);
+    }
+    else
+    {
+      if(item->getInfo() < item->getParent()->getInfo())
+      {
+        item->getParent()->setLeft(maxMin);
+      }
+      else
+      {
+        item->getParent()->setRight(maxMin);
+      }
+    }
+    delete item;
+    return maxMin;
+  }
+  return nullptr;
+}
+
+
 
 #endif
