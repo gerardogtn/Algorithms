@@ -27,7 +27,6 @@ public:
 template <class T>
 BinarySearchTree<T>::BinarySearchTree() : BinaryTree<T>()
 {
-
 }
 
 template <class T>
@@ -180,7 +179,6 @@ BNode<T> * BinarySearchTree<T>::removeNode(BNode<T> * item)
   }
   return nullptr;
 }
-
 
 
 #endif
