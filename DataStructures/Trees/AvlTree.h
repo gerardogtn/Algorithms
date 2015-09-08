@@ -133,7 +133,14 @@ BNode<T>* AvlTree<T>::rotateleft(BNode<T> * node)
     }
     else
     {
-      tempLeft->getParent()->setRight(tempLeft);
+      if(node->getParent()->getInfo() > node->getInfo())
+      {
+        tempLeft->getParent()->setRight(tempLeft);
+      }
+      else
+      {
+        tempLeft->getParent()->setLeft(tempLeft);
+      }
     }
   }
   else if(tempRight != nullptr)
@@ -144,7 +151,7 @@ BNode<T>* AvlTree<T>::rotateleft(BNode<T> * node)
     node->setLeft(pivot);
     pivot->setParent(node);
     pivot->setRight(tempA);
-
+    std::cout << "Hace todo esto bien" << std::endl;
     if(tempA != nullptr)
     {
       tempA->setParent(pivot);
@@ -155,7 +162,14 @@ BNode<T>* AvlTree<T>::rotateleft(BNode<T> * node)
     }
     else
     {
-      node->getParent()->setRight(node);
+      if(node->getParent()->getInfo() > node->getInfo())
+      {
+        node->getParent()->setLeft(node);
+      }
+      else
+      {
+        node->getParent()->setRight(node);
+      }
     }
   }
 

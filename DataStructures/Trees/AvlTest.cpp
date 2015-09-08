@@ -16,18 +16,18 @@ int main (int argc, const char * argv[])
   BNode<int> * m_fifteen = new BNode<int>(15);
 
 
-  // avlt->insert(m_ten);
-  // avlt->insert(m_two);
-  // avlt->insert(m_twelve);
-  // avlt->insert(m_four);
-  // avlt->insert(m_six);
-  // avlt->insert(m_thirteen);
-  // avlt->insert(m_eleven);
-  // avlt->insert(m_fifteen);
-  // avlt->insert(m_three);
+  avlt->insert(m_ten);
+  avlt->insert(m_two);
   avlt->insert(m_twelve);
+  avlt->insert(m_four);
+  avlt->insert(m_six);
   avlt->insert(m_thirteen);
+  avlt->insert(m_eleven);
   avlt->insert(m_fifteen);
+  avlt->insert(m_three);
+
+
+
 
 
   std::cout << "Imprimiendo en orden ascendente" << std::endl;
@@ -46,25 +46,25 @@ int main (int argc, const char * argv[])
   std::cout << "Balance Factor, elemento 15: " << avlt->getBalanceFactor(m_fifteen)<< std::endl;
 
 
-  // std::cout << "=============== TEST DELETE ====================" << std::endl;
-  // std::cout << "Eliminando el 3: " << std::endl;
-  // avlt->removeNode(m_three);
-  // std::cout << "3 eliminado!" << std::endl;
-  // std::cout << "Eliminando el 6: " << std::endl;
-  // avlt->removeNode(m_six);
-  // std::cout << "6 eliminado!" << std::endl;
-  // std::cout << "Eliminando el 2: " << std::endl;
-  // avlt->removeNode(m_two);
-  // std::cout << "2 eliminado!" << std::endl;
-  // std::cout << "Eliminando el 15: " << std::endl;
-  // avlt->removeNode(m_fifteen);
-  // std::cout << "15 eliminado!" << std::endl;
-  // std::cout << "Eliminando el 4: " << std::endl;
-  // avlt->removeNode(m_four);
-  // std::cout << "4 eliminado!" << std::endl;
-  // std::cout << "Eliminando el 13: " << std::endl;
-  // avlt->removeNode(m_thirteen);
-  // std::cout << "13 eliminado!" << std::endl;
+  std::cout << "=============== TEST DELETE ====================" << std::endl;
+  std::cout << "Eliminando el 3: " << std::endl;
+  avlt->removeNode(m_three);
+  std::cout << "3 eliminado!" << std::endl;
+  std::cout << "Eliminando el 6: " << std::endl;
+  avlt->removeNode(m_six);
+  std::cout << "6 eliminado!" << std::endl;
+  std::cout << "Eliminando el 2: " << std::endl;
+  avlt->removeNode(m_two);
+  std::cout << "2 eliminado!" << std::endl;
+  std::cout << "Eliminando el 15: " << std::endl;
+  avlt->removeNode(m_fifteen);
+  std::cout << "15 eliminado!" << std::endl;
+  std::cout << "Eliminando el 4: " << std::endl;
+  avlt->removeNode(m_four);
+  std::cout << "4 eliminado!" << std::endl;
+  std::cout << "Eliminando el 13: " << std::endl;
+  avlt->removeNode(m_thirteen);
+  std::cout << "13 eliminado!" << std::endl;
 
 
 
