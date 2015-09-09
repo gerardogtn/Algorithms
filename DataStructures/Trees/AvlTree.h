@@ -21,7 +21,7 @@ public:
   virtual void insert(const T item);
   virtual void insert(BNode<T> * item);
 
-  // virtual bool removeNode(const T item);
+  virtual bool removeNode(const T item);
   virtual bool removeNode(BNode<T> * item);
   void prettyPrint(BNode<T> * node, int indent);
 
@@ -44,7 +44,29 @@ BNode<T> * AvlTree<T>::rotateright(BNode<T> * node)
   BNode<T> * tempRight = node->getRight();
   BNode<T> * tempLeft = node->getLeft();
 
-  if (tempRight != nullptr)
+  if(tempLeft != nullptr && tempRight == nullptr)
+  {
+    BNode<T> * tempA = node->getRight();
+
+    node->setParent(pivot->getParent());
+    node->setRight(pivot);
+    pivot->setParent(node);
+    pivot->setLeft(tempA);
+
+    if(tempA != nullptr)
+    {
+      tempA->setParent(pivot);
+    }
+    if(BinaryTree<T>::isRoot(pivot))
+    {
+      BinaryTree<T>::forceSetRoot(node);
+    }
+    else
+    {
+      node->getParent()->setLeft(node);
+    }
+  }
+  else if (tempRight != nullptr)
   {
     BNode<T> * tempA = tempRight->getLeft();
     BNode<T> * tempB = tempRight->getRight();
@@ -71,29 +93,14 @@ BNode<T> * AvlTree<T>::rotateright(BNode<T> * node)
     }
     else
     {
-      tempRight->getParent()->setLeft(tempRight);
-    }
-  }
-  else if(tempLeft != nullptr)
-  {
-    BNode<T> * tempA = node->getRight();
-
-    node->setParent(pivot->getParent());
-    node->setRight(pivot);
-    pivot->setParent(node);
-    pivot->setLeft(tempA);
-
-    if(tempA != nullptr)
-    {
-      tempA->setParent(pivot);
-    }
-    if(BinaryTree<T>::isRoot(pivot))
-    {
-      BinaryTree<T>::forceSetRoot(node);
-    }
-    else
-    {
-      node->getParent()->setLeft(node);
+      if(tempRight->getParent()->getInfo() <= tempRight->getInfo())
+      {
+        tempRight->getParent()->setRight(tempRight);
+      }
+      else
+      {
+        tempRight->getParent()->setLeft(tempRight);
+      }
     }
   }
   return node;
@@ -106,7 +113,35 @@ BNode<T>* AvlTree<T>::rotateleft(BNode<T> * node)
   BNode<T> * tempRight = node->getRight();
   BNode<T> * tempLeft = node->getLeft();
 
-  if(tempLeft != nullptr)
+  if(tempRight != nullptr && tempLeft == nullptr)
+  {
+    BNode<T> * tempA = node->getLeft();
+
+    node->setParent(pivot->getParent());
+    node->setLeft(pivot);
+    pivot->setParent(node);
+    pivot->setRight(tempA);
+    if(tempA != nullptr)
+    {
+      tempA->setParent(pivot);
+    }
+    if(BinaryTree<T>::isRoot(pivot))
+    {
+      BinaryTree<T>::forceSetRoot(node);
+    }
+    else
+    {
+      if(node->getParent()->getInfo() > node->getInfo())
+      {
+        node->getParent()->setLeft(node);
+      }
+      else
+      {
+        node->getParent()->setRight(node);
+      }
+    }
+  }
+  else if(tempLeft != nullptr)
   {
     BNode<T> * tempA = tempLeft->getLeft();
     BNode<T> * tempB = tempLeft->getRight();
@@ -133,7 +168,7 @@ BNode<T>* AvlTree<T>::rotateleft(BNode<T> * node)
     }
     else
     {
-      if(node->getParent()->getInfo() > node->getInfo())
+      if(tempLeft->getParent()->getInfo() <= tempLeft->getInfo())
       {
         tempLeft->getParent()->setRight(tempLeft);
       }
@@ -143,35 +178,7 @@ BNode<T>* AvlTree<T>::rotateleft(BNode<T> * node)
       }
     }
   }
-  else if(tempRight != nullptr)
-  {
-    BNode<T> * tempA = node->getLeft();
 
-    node->setParent(pivot->getParent());
-    node->setLeft(pivot);
-    pivot->setParent(node);
-    pivot->setRight(tempA);
-    std::cout << "Hace todo esto bien" << std::endl;
-    if(tempA != nullptr)
-    {
-      tempA->setParent(pivot);
-    }
-    if(BinaryTree<T>::isRoot(pivot))
-    {
-      BinaryTree<T>::forceSetRoot(node);
-    }
-    else
-    {
-      if(node->getParent()->getInfo() > node->getInfo())
-      {
-        node->getParent()->setLeft(node);
-      }
-      else
-      {
-        node->getParent()->setRight(node);
-      }
-    }
-  }
 
 
   return node;
@@ -189,7 +196,6 @@ void AvlTree<T>::balance(BNode<T> * node)
   {
     rotateright(node);
   }
-//  this->prettyPrint(this->getRoot(),0);
   if(!this->isAvl())
   {
     balance(node->getParent());
@@ -210,62 +216,20 @@ void AvlTree<T>::insert(BNode<T> * item)
   this->balance(item->getParent());
 }
 
-
-
-// REQUIRES: None.
-// MODIFIES: this.
-// EFFECTS:  Returns true if the element was found and was deleted.
-// template <class T>
-// bool AvlTree<T>::remove(const T item)
-// {
-//   return remove(BinarySearchTree<T>::searchGetNode(item));
-// }
-
-// REQUIRES: item is in Avl Tree
-// MODIFIES: this.
-// EFFECTS: Returns true if item was deleted.
-// INVARIANT: Avl is balanced.
-// template <class T>
-// bool AvlTree<T>::removeNode(BNode<T> * item)
-// {
-//   if (item->isLeaf()) {
-//     BNode<T> * parent = item->getParent();
-//     if (item->getInfo() < parent->getInfo())
-//     {
-//       parent->setLeft(nullptr);
-//     }
-//     else
-//     {
-//       parent->setRight(nullptr);
-//     }
-//     delete item;
-//     balance(parent);
-//     return true;
-//   }
-//   else if (item->hasOneChild())
-//   {
-//     BNode<T> * child;
-//     if (item->getRight() != nullptr)
-//     {
-//       child = item->getRight();
-//       item->setRight(nullptr);
-//     }
-//     else
-//     {
-//       child = item->getLeft();
-//       item->setLeft(nullptr);
-//     }
-//     item->setInfo(child->getInfo());
-//     removeNode(child);
-//   }
-//   else
-//   {
-//     BNode<T> * maxMin = this->getMaxMin(item);
-//     item->setInfo(maxMin->getInfo());
-//     removeNode(maxMin);
-//   }
-//   return true;
-// }
+template <class T>
+bool AvlTree<T>::removeNode(const T item)
+{
+  BNode<T> * nodeToDelete = BinarySearchTree<T>::searchGetNode(item);
+  if (nodeToDelete)
+  {
+    this->removeNode(nodeToDelete);
+    return true;
+  }
+  else
+  {
+    return false;
+  }
+}
 
 template <class T>
 bool AvlTree<T>::removeNode(BNode<T> * item)
@@ -273,9 +237,8 @@ bool AvlTree<T>::removeNode(BNode<T> * item)
   if(item->isLeaf())
   {
     BNode<T> * parentOfRemoved = item->getParent();
-    BNode<T> * balanceElement;
     item->setParent(nullptr);
-    if(parentOfRemoved->getInfo() < item->getInfo())
+    if(parentOfRemoved->getInfo() <= item->getInfo())
     {
       parentOfRemoved->setRight(nullptr);
     }
@@ -285,67 +248,76 @@ bool AvlTree<T>::removeNode(BNode<T> * item)
     }
     if(BinaryTree<T>::isRoot(parentOfRemoved))
     {
-      int balanceFactor = BinaryTree<T>::getBalanceFactor(parentOfRemoved);
-      if(balanceFactor == -2)
-      {
-        balance(parentOfRemoved->getLeft());
-      }
-      else
+      if(BinaryTree<T>::getBalanceFactor(parentOfRemoved)==2)
       {
         balance(parentOfRemoved->getRight());
-      }
-    }
-    if(BinaryTree<T>::getBalanceFactor(parentOfRemoved->getParent())==2)
-    {
-      if(BinaryTree<T>::isRoot(parentOfRemoved))
-      {
-        bool hasRight = parentOfRemoved->getLeft()->getRight();
-        if(hasRight)
-        {
-          balanceElement = parentOfRemoved->getLeft()->getRight();
-        }
-        else
-        {
-          balanceElement = parentOfRemoved->getLeft()->getLeft();
-        }
-        if(balanceElement)
-        {
-          balance(balanceElement);
-        }
+        return true;
       }
       else
       {
-        BNode<T> * balanceElement = parentOfRemoved->getParent()->getRight();
-        balance(balanceElement);
+        balance(parentOfRemoved->getLeft());
+        return true;
       }
     }
     else
     {
-      if(BinaryTree<T>::isRoot(parentOfRemoved))
+      if(BinaryTree<T>::getBalanceFactor(parentOfRemoved)==2)
       {
-        bool hasLeft = parentOfRemoved->getLeft()->getLeft();
-        if(hasLeft)
-        {
-          balanceElement = parentOfRemoved->getLeft()->getLeft();
-        }
-        else
-        {
-          balanceElement = parentOfRemoved->getLeft()->getRight();
-        }
-        if(balanceElement)
-        {
-          balance(balanceElement);
-        }
+        balance(parentOfRemoved->getRight());
+        return true;
       }
-      else
+      else if(BinaryTree<T>::getBalanceFactor(parentOfRemoved)==-2)
       {
-        BNode<T> * balanceElement = parentOfRemoved->getParent()->getLeft();
-        balance(balanceElement);
+        balance(parentOfRemoved->getParent()->getLeft());
+        return true;
       }
+      else if(BinaryTree<T>::getBalanceFactor(parentOfRemoved->getParent())==2)
+      {
+        balance(parentOfRemoved->getParent()->getRight());
+        if(!this->isAvl())
+        {
+          BNode<T> * nuevoABalancear = parentOfRemoved->getParent()->getParent()->getRight();
+          if(nuevoABalancear->getRight() != nullptr)
+          {
+            balance(nuevoABalancear->getRight());
+          }
+          else if (nuevoABalancear->getLeft() != nullptr)
+          {
+            balance(nuevoABalancear->getLeft());
+          }
+        }
+        return true;
+      }
+      else if(BinaryTree<T>::getBalanceFactor(parentOfRemoved->getParent())==-2)
+      {
+        balance(parentOfRemoved->getParent()->getLeft());
+        if(!this->isAvl())
+        {
+          balance(parentOfRemoved->getParent()->getParent()->getLeft());
+        }
+        return true;
+      }
+
+    }
+  }
+  else
+  {
+    BNode<T> * maxMin = BinaryTree<T>::getMaxMin(item);
+    item->setInfo(maxMin->getInfo());
+    if(maxMin->isLeaf())
+    {
+
+      maxMin->getParent()->setRight(nullptr);
+      maxMin->setParent(nullptr);
+    }
+    else
+    {
+      item->getLeft()->setRight(maxMin->getLeft());
+      maxMin->getLeft()->setParent(item->getLeft());
+      maxMin->setParent(nullptr);
+      maxMin->setLeft(nullptr);
     }
 
-
-    return true;
   }
   return false;
 }

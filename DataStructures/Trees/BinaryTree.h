@@ -454,6 +454,7 @@ bool BinaryTree<T>::isAvl() const
 template <class T>
 bool BinaryTree<T>::isAvl(BNode<T> * node) const
 {
+
   if (node)
   {
     if (abs(getBalanceFactor(node)) > 1 )
@@ -521,8 +522,6 @@ BNode<T> * BinaryTree<T>::getMaxMin(BNode<T> * node) const
   {
     return nullptr;
   }
-
-
 }
 
 #endif
