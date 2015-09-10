@@ -28,11 +28,11 @@ public:
   virtual void clear();
   virtual void clear(BNode<T> * node);
 
-  BNode<T> * getRoot() const;
+  virtual BNode<T> * getRoot() const;
   virtual void setRoot(const T element);
   virtual void setRoot(BNode<T> * node);
-  void forceSetRoot(BNode<T> * node);
-  bool isRoot(BNode<T> * node);
+  virtual void forceSetRoot(BNode<T> * node);
+  virtual bool isRoot(BNode<T> * node);
 
   bool insert(BNode<T> * parent, const T value);
   bool insert(BNode<T> * parent, BNode<T> * value);
@@ -41,40 +41,40 @@ public:
   void insertOrder(BNode<T> * item);
   void insertOrder(BNode<T> * parent, BNode<T> * item);
 
-  void preOrder() const;
-  void preOrder(BNode<T> * node) const;
+  virtual void preOrder() const;
+  virtual void preOrder(BNode<T> * node) const;
 
-  void inOrder() const;
-  void inOrder(BNode<T> * node) const;
+  virtual void inOrder() const;
+  virtual void inOrder(BNode<T> * node) const;
 
-  void inverseInOrder() const;
-  void inverseInOrder(BNode<T> * node) const;
+  virtual void inverseInOrder() const;
+  virtual void inverseInOrder(BNode<T> * node) const;
 
   void toInOrderArray(T * array, int arraySize);
   void toInOrderArray(BNode<T> * node, T * array, int arraySize, int & i);
 
-  void postOrder() const;
-  void postOrder(BNode<T> * node) const;
+  virtual void postOrder() const;
+  virtual void postOrder(BNode<T> * node) const;
 
-  void isLeaf() const;
-  void isLeaf(BNode<T> * node) const;
+  virtual void isLeaf() const;
+  virtual void isLeaf(BNode<T> * node) const;
 
   void ancestors(BNode<T> * node) const;
 
-  int getHeight() const;
-  int getHeight(BNode<T> * node) const ;
+  virtual int getHeight() const;
+  virtual int getHeight(BNode<T> * node) const ;
 
-  int getDepth() const;
-  int getDepth(BNode<T> * node) const;
+  virtual int getDepth() const;
+  virtual int getDepth(BNode<T> * node) const;
 
-  int getLevel() const;
-  int getLevel(BNode<T> * node) const;
+  virtual int getLevel() const;
+  virtual int getLevel(BNode<T> * node) const;
 
-  int getBalanceFactor() const;
-  int getBalanceFactor(BNode<T> * node) const ;
+  virtual int getBalanceFactor() const;
+  virtual int getBalanceFactor(BNode<T> * node) const ;
 
-  bool isAvl() const;
-  bool isAvl(BNode<T> * node) const;
+  virtual bool isAvl() const;
+  virtual bool isAvl(BNode<T> * node) const;
 
   BinaryTree<T> * copy() const;
   BNode<T> * copy (const BNode<T> * node) const;

@@ -33,17 +33,17 @@ public:
 
   virtual ~BNode();
 
-  T getInfo() const { return info; }
-  void setInfo(const T & value) { info = value; }
+  virtual T getInfo() const { return info; }
+  virtual void setInfo(const T & value) { info = value; }
 
-  BNode<T> * getLeft() const { return left; }
-  void setLeft(BNode<T> * value) { left = value; }
+  virtual BNode<T> * getLeft() const { return left; }
+  virtual void setLeft(BNode<T> * value) { left = value; }
 
-  BNode<T> * getRight() const { return right; }
-  void setRight(BNode<T> * value) { right = value; }
+  virtual BNode<T> * getRight() const { return right; }
+  virtual void setRight(BNode<T> * value) { right = value; }
 
-  BNode<T> * getParent() const { return parent; }
-  void setParent(BNode<T> * value) { parent = value; }
+  virtual BNode<T> * getParent() const { return parent; }
+  virtual void setParent(BNode<T> * value) { parent = value; }
 
   template <typename Tn>
   friend std::ostream & operator << (std::ostream & os, const BNode<Tn>  & node);

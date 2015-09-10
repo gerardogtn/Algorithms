@@ -17,10 +17,13 @@ public:
 
   bool search(const T item) const;
   bool search(const T item, BNode<T> * node) const;
+
   BNode<T> * searchGetNode(const T item) const;
   BNode<T> * searchGetNode(const T item, BNode<T> * node) const;
   BNode<T> * searchGetNode(BNode<T> * itemToDelete, BNode<T> * node) const;
 
+  BNode<T> * getSuccessor(BNode<T> * node) const;
+  BNode<T> * getPredecessor(BNode<T> * node) const;
 };
 
 template <class T>
@@ -119,6 +122,30 @@ BNode<T> * BinarySearchTree<T>::searchGetNode(BNode<T> * itemToDelete, BNode<T> 
       return searchGetNode(itemToDelete, node->getRight());
     }
   }
+}
+
+template <class T>
+BNode<T> * BinarySearchTree<T>::getSuccessor(BNode<T> * node) const
+{
+  if(!node) return nullptr;
+
+  BNode<T> * output = node->getRight();
+  while (output->getLeft()) {
+    output = output->getLeft();
+  }
+  return output;
+
+}
+template <class T>
+BNode<T> * BinarySearchTree<T>::getPredecessor(BNode<T> * node) const
+{
+  if(!node) return nullptr;
+
+  BNode<T> * output = node->getLeft();
+  while (output->getRight()) {
+    output = output->getRight();
+  }
+  return output;
 }
 
 #endif
