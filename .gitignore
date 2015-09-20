@@ -58,3 +58,6 @@ xcuserdata
 *.xccheckout
 *.moved-aside
 *.xcuserstate
+
+## Cxx Test
+cxxtest-4.3/
