@@ -17,6 +17,9 @@ public:
   Node();
   virtual ~Node();
 
+  Node<Record, order> * getChildren(const int position);
+  Record * getData(const int position);
+
 };
 
 template <class Record, int order>
@@ -52,6 +55,39 @@ Node<Record, order>::~Node()
 
   delete[] data;
   delete[] children;
+}
+
+
+// REQUIRES: None.
+// MODIFIES: None.
+// EFFECTS: If position is valid, returns pointer to children. Else nullptr.
+template <class Record, int order>
+Node<Record, order> * Node<Record, order>::getChildren(const int position)
+{
+  if (position < order  && position >= 0)
+  {
+    return this->children[position];
+  }
+  else
+  {
+    return nullptr;
+  }
+}
+
+// REQUIRES: None.
+// MODIFIES: None.
+// EFFECTS: If position is valid, returns pointer to record. Else nullptr.
+template <class Record, int order>
+Record * Node<Record, order>::getData(const int position)
+{
+  if (position < order - 1 && position >= 0)
+  {
+    return this->data[position];
+  }
+  else
+  {
+    return nullptr;
+  }
 }
 
 #endif
