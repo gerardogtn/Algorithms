@@ -99,15 +99,13 @@ template <class Record, int order>
 bool BTree<Record, order>::searchNode(Node<Record, order> * current, Record target, int & position)
 {
   position = 0;
-  while(position < current->getCount() && target > current->getChildren(position))
+  while(position < current->getCount() && target > *current->getData(position))
   {
     position++;
   }
 
-  return position < current->getCount() && target == current->getChildren(position);
+  return position < current->getCount() && target == *current->getData(position);
 }
-
-// TODO: Add getChildren, and getCount methods to Node.h.
 
 
 #define  BTree_h
