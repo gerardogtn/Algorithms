@@ -19,6 +19,7 @@ public:
 
   Node<Record, order> * getChildren(const int position);
   Record * getData(const int position);
+  int getCount(){return count;};
 
 };
 
