@@ -29,6 +29,8 @@ int main(int argc, const char * argv[])
   std::cout << (tree->search('i')? "Encontre I": "No encontre I") << std::endl;
   std::cout << (tree->search('j')? "Encontre J": "No encontre J") << std::endl;
   std::cout << (tree->search('k')? "Encontre K": "No encontre K") << std::endl;
+  std::cout << (tree->search('l')? "Encontre L": "No encontre L") << std::endl;
+  std::cout << (tree->search('m')? "Encontre M": "No encontre M") << std::endl;
 
   std::cout << "====================== INSERTANDO ELEMENTO EXTRA" << std::endl;
   tree->insert('k');
@@ -36,7 +38,7 @@ int main(int argc, const char * argv[])
   tree->insert('h');
   tree->insert('m');
   tree->insert('j');
-  std::cout << "C D H J M: insertada \n" << std::endl;
+  std::cout << "K D H M J: insertada \n" << std::endl;
   tree->printTree();
 
   std::cout << "====================== BUSCANDO ELEMENTOS" << std::endl;
@@ -51,6 +53,8 @@ int main(int argc, const char * argv[])
   std::cout << (tree->search('i')? "Encontre I": "No encontre I") << std::endl;
   std::cout << (tree->search('j')? "Encontre J": "No encontre J") << std::endl;
   std::cout << (tree->search('k')? "Encontre K": "No encontre K") << std::endl;
+  std::cout << (tree->search('l')? "Encontre L": "No encontre L") << std::endl;
+  std::cout << (tree->search('m')? "Encontre M": "No encontre M") << std::endl;
 
 
   delete tree;
