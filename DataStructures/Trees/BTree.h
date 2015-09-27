@@ -15,7 +15,7 @@ private:
   bool searchNode(Node<Record, order> * current, const Record & target, int & position);
 
   void pushDown(Node<Record, order> * current, const Record & newEntry,
-      Record & median, Node<Record, order> * rightBranch);
+      Record & median, Node<Record, order> * &rightBranch);
 
   void push(Node<Record, order> * current, const Record & entry,
       Node<Record, order> * rightBranch, int position);
@@ -41,7 +41,7 @@ public:
 template <class Record, int order>
 BTree<Record, order>::BTree()
 {
-  this->root = nullptr;
+  this->root = new Node<Record, order>();
 }
 
 template <class Record, int order>
@@ -154,10 +154,8 @@ void BTree<Record, order>::insert(const Record & newEntry)
     Node<Record, order> * newRoot = new Node<Record, order>();
     newRoot->setCount(1);
     newRoot->setData(0, median);
-    // After pushDown, root is modified and becomes leftBranch.
     newRoot->setChildren(0, root);
     newRoot->setChildren(1, rightBranch);
-    std::cout << "MODIFICANDO RAIZ" << std::endl;
     this->root = newRoot;
   }
 }
@@ -170,10 +168,9 @@ template <class Record, int order>
 void BTree<Record, order>::pushDown(Node<Record, order> * current,
                                     const Record & newEntry,
                                     Record & median,
-                                    Node<Record,order> * rightBranch)
+                                    Node<Record,order> * &rightBranch)
 {
   int position;
-
   if (current == nullptr)
   {
     median = newEntry;
@@ -200,6 +197,8 @@ void BTree<Record, order>::pushDown(Node<Record, order> * current,
         else
         {
           splitNode(current,extraEntry, extraBranch, position, rightBranch, median);
+          std::cout << "Right branch: " << *rightBranch << std::endl;
+          throw OverflowException();
         }
       }
     }
@@ -235,7 +234,6 @@ void BTree<Record, order>::push(Node<Record, order> * current,
 // EFFECTS: The node current with extraEntry and extraBranch at position are
 // divided into nodes *current and *rightHalf separated by median.
 
-// TODO: Median is obtained but not sent upward for reinsertion.
 template <class Record, int order>
 void BTree<Record, order>::splitNode(Node<Record, order> * current,
                                      const Record & extraEntry,
