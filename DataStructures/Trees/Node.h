@@ -2,24 +2,36 @@
 #define Node_h
 
 #include <iostream>
+#include "IndexOutOfBoundsException.cpp"
 
+// This class assumes that order is small; as such it uses arrays to store
+// data and children. If order were large a list would be prefered.
 template <class Record, int order>
 class Node
 {
 
 private:
-  // Number of records in each node (if count != 0, node has count + 1 children)
   int count;
-  Record **data;
-  Node<Record, order>  **children;
+  Record data[order - 1];
+  Node<Record, order>  * children[order];
 
 public:
   Node();
   virtual ~Node();
 
-  Node<Record, order> * getChildren(const int position);
-  Record * getData(const int position);
   int getCount(){return count;};
+  Record & getData(const int position);
+  Node<Record, order> * getChildren(const int position);
+
+  void setCount(const int count){ this->count = count; };
+  void setData(const int position, Record  record);
+  void setChildren(const int position, Node<Record, order> * node);
+
+  void incrementCount(){ count++;}
+  void decrementCount(){ count--;}
+
+  template <typename T, int n>
+  friend std::ostream & operator << (std::ostream & os, Node<T, n>  & node);
 
 };
 
@@ -27,37 +39,21 @@ template <class Record, int order>
 Node<Record, order>::Node()
 {
   this->count = 0;
-  this->data = new Record *[order - 1];
-  this->children = new Node *[order];
-
-  for (int i = 0; i < order - 1; i++){
-    data[i] = nullptr;
+  for (int i = 0; i < order; i++)
+  {
     children[i] = nullptr;
   }
-  children[order - 1] = nullptr;
 }
 
 template <class Record, int order>
 Node<Record, order>::~Node()
 {
-  for (int i = 0; i < order - 1; i++)
-  {
-    if (data[i]){
-      delete data[i];
-    }
+  for (int i = 0; i< order; i++){
     if (children[i]){
       delete children[i];
     }
   }
-
-  if (children[order - 1]){
-    delete children[order - 1];
-  }
-
-  delete[] data;
-  delete[] children;
 }
-
 
 // REQUIRES: None.
 // MODIFIES: None.
@@ -71,15 +67,15 @@ Node<Record, order> * Node<Record, order>::getChildren(const int position)
   }
   else
   {
-    return nullptr;
+    throw IndexOutOfBoundsException();
   }
 }
 
 // REQUIRES: None.
 // MODIFIES: None.
-// EFFECTS: If position is valid, returns pointer to record. Else nullptr.
+// EFFECTS: If position is valid, returns record. Else throw KeyNotFoundException.
 template <class Record, int order>
-Record * Node<Record, order>::getData(const int position)
+Record & Node<Record, order>::getData(const int position)
 {
   if (position < order - 1 && position >= 0)
   {
@@ -87,8 +83,59 @@ Record * Node<Record, order>::getData(const int position)
   }
   else
   {
-    return nullptr;
+    throw IndexOutOfBoundsException();
   }
 }
+
+// REQUIRES: None.
+// MODIFIES: this.
+// EFFECTS: Returns true if data set was succesful, false otherwise.
+template <class Record, int order>
+void Node<Record, order>::setData(const int position, Record record)
+{
+  if (position < order - 1 && position >= 0)
+  {
+    this->data[position] = record;
+  }
+  else
+  {
+    throw IndexOutOfBoundsException();
+  }
+}
+
+// REQUIRES: None.
+// MODIFIES: this.
+// EFFECTS: Returns true if children set was succesful, false otherwise.
+template <class Record, int order>
+void Node<Record, order>::setChildren(const int position, Node<Record, order> * node)
+{
+  if (position < order && position >= 0)
+  {
+    this->children[position] = node;
+  }
+  else
+  {
+    throw IndexOutOfBoundsException();
+  }
+}
+
+template <class Record, int order>
+std::ostream & operator << (std::ostream & os, Node<Record, order>  & node)
+{
+  for (int i = 0; i < order - 1; i++)
+  {
+    if (i < node.getCount())
+    {
+      os << node.getData(i) << " ";
+    }
+    else
+    {
+      os << "N ";
+    }
+  }
+
+  return os;
+}
+
 
 #endif
