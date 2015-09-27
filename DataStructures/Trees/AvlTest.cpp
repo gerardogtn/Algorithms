@@ -1,11 +1,3 @@
-//
-//  main.cpp
-//  Arboles
-//
-//  Created by Krikor Bisdikian G. on 5/9/15.
-//  Copyright © 2015 Krikor Bisdikian G. All rights reserved.
-//
-
 #include <iostream>
 #include "BinarySearchTree.h"
 #include "AvlTree.h"
@@ -21,7 +13,7 @@ int main(int argc, const char * argv[]) {
     int random;
     int array[10];
 
-    for(int i=0; i<100000; i++){
+    for(int i=0; i<10000; i++){
         random = rand();
 
         numeros.insert(random);
