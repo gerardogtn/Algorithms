@@ -1,4 +1,5 @@
 #ifndef BTree_h
+#define  BTree_h
 #include <iostream>
 #include "Node.h"
 #include "OverflowException.cpp"
@@ -524,5 +525,4 @@ void BTree<Record, order>::printNode(Node<Record, order> * current)
     }
   }
 }
-#define  BTree_h
 #endif
