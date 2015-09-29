@@ -19,69 +19,59 @@ class BinaryTree {
 protected:
   BinaryNode<T> * root;
 
+  virtual void clear(BinaryNode<T> * node);
+
+  void preOrder(BinaryNode<T> * node) const;
+  void inOrder(BinaryNode<T> * node) const;
+  void postOrder(BinaryNode<T> * node) const;
+  void inverseInOrder(BinaryNode<T> * node) const;
+
+  int getHeight(BinaryNode<T> * node) const;
+  int getDepth(BinaryNode<T> * node) const;
+  int getLevel(BinaryNode<T> * node) const;
+  int getBalanceFactor(BinaryNode<T> * node) const;
+
+  virtual bool isAvl(BinaryNode<T> * node) const;
+
+  // BinaryNode<T> * copy (const BinaryNode<T> * node) const;
+
 public:
   BinaryTree();
   virtual ~BinaryTree();
 
-  virtual bool empty();
-
-  virtual void clear();
-  virtual void clear(BinaryNode<T> * node);
-
-  virtual BinaryNode<T> * getRoot() const;
+  virtual BinaryNode<T> * getRoot();
   virtual void setRoot(const T element);
   virtual void setRoot(BinaryNode<T> * node);
   virtual void forceSetRoot(BinaryNode<T> * node);
   virtual bool isRoot(BinaryNode<T> * node);
 
-  bool insert(BinaryNode<T> * parent, const T value);
-  bool insert(BinaryNode<T> * parent, BinaryNode<T> * value);
+  bool empty();
+  virtual void clear();
 
-  void insertOrder(T item);
-  void insertOrder(BinaryNode<T> * item);
-  void insertOrder(BinaryNode<T> * parent, BinaryNode<T> * item);
+  //bool insert(BinaryNode<T> * parent, const T value);
+  //bool insert(BinaryNode<T> * parent, BinaryNode<T> * value);
 
-  virtual void preOrder() const;
-  virtual void preOrder(BinaryNode<T> * node) const;
+  void preOrder() const;
+  void inOrder() const;
+  void postOrder() const;
+  void inverseInOrder() const;
 
-  virtual void inOrder() const;
-  virtual void inOrder(BinaryNode<T> * node) const;
-
-  virtual void inverseInOrder() const;
-  virtual void inverseInOrder(BinaryNode<T> * node) const;
-
-  void toInOrderArray(T * array, int arraySize);
-  void toInOrderArray(BinaryNode<T> * node, T * array, int arraySize, int & i);
-
-  virtual void postOrder() const;
-  virtual void postOrder(BinaryNode<T> * node) const;
-
-  virtual void isLeaf() const;
-  virtual void isLeaf(BinaryNode<T> * node) const;
-
-  void ancestors(BinaryNode<T> * node) const;
-
-  virtual int getHeight() const;
-  virtual int getHeight(BinaryNode<T> * node) const ;
-
-  virtual int getDepth() const;
-  virtual int getDepth(BinaryNode<T> * node) const;
-
-  virtual int getLevel() const;
-  virtual int getLevel(BinaryNode<T> * node) const;
-
-  virtual int getBalanceFactor() const;
-  virtual int getBalanceFactor(BinaryNode<T> * node) const ;
+  int getHeight() const;
+  int getDepth() const;
+  int getLevel() const;
+  int getBalanceFactor() const;
 
   virtual bool isAvl() const;
-  virtual bool isAvl(BinaryNode<T> * node) const;
+  bool isBTree()const {return false;};
+  bool isTwoThreeTree()const {return false;};
+  virtual bool isRedBlackTree() const {return false;};
+  // TODO: implement isBST
+  virtual bool isBST() const {return false;};
 
-  BinaryTree<T> * copy() const;
-  BinaryNode<T> * copy (const BinaryNode<T> * node) const;
+  // BinaryTree<T> * copy() const;
 
-  BinaryNode<T> * getMaxMin() const;
-  BinaryNode<T> * getMaxMin(BinaryNode<T> * node) const;
-
+  BinaryNode<T> * getSuccessor(BinaryNode<T> * node) const;
+  BinaryNode<T> * getPredecessor(BinaryNode<T> * node) const;
 };
 
 template <class T>
@@ -120,7 +110,7 @@ void BinaryTree<T>::clear(BinaryNode<T> * node)
 }
 
 template <class T>
-BinaryNode<T> * BinaryTree<T>::getRoot() const
+BinaryNode<T> * BinaryTree<T>::getRoot()
 {
   return root;
 }
@@ -137,7 +127,7 @@ void BinaryTree<T>::setRoot(BinaryNode<T> * node)
 {
   if (!empty()) {
     node->setLeft(root);
-    root->setParent(node);
+    //root->setParent(node);
     root = node;
   }
   else {
@@ -156,92 +146,41 @@ bool BinaryTree<T>::isRoot(BinaryNode<T> * node){
   return node == this->root;
 }
 
-template <class T>
-void BinaryTree<T>::insertOrder(T item)
-{
-  BinaryNode<T> * node = new BinaryNode<T>(item);
-  insertOrder(this->root, node);
-}
+// template <class T>
+// bool BinaryTree<T>::insert(BinaryNode<T> * parent, const T value)
+// {
+//   BinaryNode<T> * node = new BinaryNode<T>(value);
+//   bool inserted = insert(parent, node);
+//
+//   if (!inserted) delete node;
+//
+//   return inserted;
+// }
 
-template <class T>
-void BinaryTree<T>::insertOrder(BinaryNode<T> * item)
-{
-  insertOrder(this->root, item);
-}
-
-template <class T>
-void BinaryTree<T>::insertOrder(BinaryNode<T> * parent, BinaryNode<T> * item)
-{
-  if (empty())
-  {
-    setRoot(item);
-  }
-  else
-  {
-    if(item->getInfo() < parent->getInfo())
-    {
-
-      if (parent->getLeft() == nullptr)
-      {
-        parent->setLeft(item);
-        item->setParent(parent);
-      }
-      else
-      {
-        insertOrder(parent->getLeft(), item);
-      }
-    }
-    else
-    {
-      if (parent->getRight() == nullptr)
-      {
-        parent->setRight(item);
-        item->setParent(parent);
-      }
-      else
-      {
-        insertOrder(parent->getRight(), item);
-      }
-    }
-  }
-
-}
-
-template <class T>
-bool BinaryTree<T>::insert(BinaryNode<T> * parent, const T value)
-{
-  BinaryNode<T> * node = new BinaryNode<T>(value);
-  bool inserted = insert(parent, node);
-
-  if (!inserted) delete node;
-
-  return inserted;
-}
-
-template <class T>
-bool BinaryTree<T>::insert(BinaryNode<T> * parent, BinaryNode<T> * value)
-{
-  bool inserted = false;
-
-  if (empty() || !parent) {
-    setRoot(value);
-    inserted = true;
-  }
-  else {
-    if (!parent->getLeft()) {
-      parent->setLeft(value);
-      value->setParent(parent);
-      inserted = true;
-    }
-    else if (!parent->getRight()) {
-      parent->setRight(value);
-      value->setParent(parent);
-      inserted = true;
-    }
-  }
-
-  return inserted;
-}
+// template <class T>
+// bool BinaryTree<T>::insert(BinaryNode<T> * parent, BinaryNode<T> * value)
+// {
+//   bool inserted = false;
+//
+//   if (empty() || !parent) {
+//     setRoot(value);
+//     inserted = true;
+//   }
+//   else {
+//     if (!parent->getLeft()) {
+//       parent->setLeft(value);
+//       value->setParent(parent);
+//       inserted = true;
+//     }
+//     else if (!parent->getRight()) {
+//       parent->setRight(value);
+//       value->setParent(parent);
+//       inserted = true;
+//     }
+//   }
+//
+//   return inserted;
+// }
 
 template <class T>
 void BinaryTree<T>::preOrder() const
@@ -302,31 +241,6 @@ void BinaryTree<T>::inverseInOrder(BinaryNode<T> * node) const
   }
 }
 
-// REQUIRES: arraySize is size of array.
-// MODIFIES: array.
-// EFFECTS: Returns the array representation of the tree in inorder.
-template <class T>
-void BinaryTree<T>::toInOrderArray(T * array, int arraySize)
-{
-  int i = 0;
-  toInOrderArray(root, array, arraySize, i);
-}
-
-// REQUIRES: arraySize is the size of the array.
-// MODIFIES: array.
-// EFFECTS: Adds the tree's elements to array in inorder.
-template <class T>
-void BinaryTree<T>::toInOrderArray(BinaryNode<T> * node, T * array,int arraySize, int & i)
-{
-  if (node)
-  {
-    toInOrderArray(node->getLeft(), array, arraySize, i);
-    array[i] = node->getInfo();
-    i++;
-    toInOrderArray(node->getRight(), array, arraySize, i);
-  }
-}
-
 template <class T>
 void BinaryTree<T>::postOrder() const
 {
@@ -343,35 +257,6 @@ void BinaryTree<T>::postOrder(BinaryNode<T> * node) const
 
     /* Procesar el nodo */
     std::cout << *node << std::endl;
-  }
-}
-
-template <class T>
-void BinaryTree<T>::isLeaf() const
-{
-  isLeaf(root);
-}
-
-template <class T>
-void BinaryTree<T>::isLeaf(BinaryNode<T> * node) const
-{
-  if (node) {
-    if (!node->getLeft() && !node->getRight()) {
-      std::cout << *node << std::endl;
-    }
-    else {
-      isLeaf(node->getLeft());
-      isLeaf(node->getRight());
-    }
-  }
-}
-
-template <class T>
-void BinaryTree<T>::ancestors(BinaryNode<T> * node) const
-{
-  if (node) {
-    std::cout << *node << " -> ";
-    ancestors(node->getParent());
   }
 }
 
@@ -474,60 +359,58 @@ bool BinaryTree<T>::isAvl(BinaryNode<T> * node) const
   }
 }
 
-// REQUIRES: None.
-// MODIFIES: None
-//  EFFECTS: Copies a binary tree.
+// // REQUIRES: None.
+// // MODIFIES: None
+// //  EFFECTS: Copies a binary tree.
+// template <class T>
+// BinaryTree<T> * BinaryTree<T>::copy() const{
+//   BinaryTree<T> * output = new BinaryTree<T>();
+//   BinaryNode<T> * node = new BinaryNode<T>();
+//   node = copy(this->getRoot());
+//   output->insert(nullptr, node);
+//   return output;
+// }
+//
+// // REQUIRES: None.
+// // MODIFIES: None
+// //  EFFECTS: Copies the root node of a tree to output.
+// // Copies the root of a tree.
+// template <class T>
+// BinaryNode<T> * BinaryTree<T>::copy(const BinaryNode<T> * node) const{
+//   if (node){
+//     BinaryNode<T> * output = new BinaryNode<T>();
+//     output->setInfo(node->getInfo());
+//     output->setRight(copy(node->getRight()));
+//     output->setLeft(copy(node->getLeft()));
+//     return output;
+//   }
+//   return nullptr;
+// }
+
+
 template <class T>
-BinaryTree<T> * BinaryTree<T>::copy() const{
-  BinaryTree<T> * output = new BinaryTree<T>();
-  BinaryNode<T> * node = new BinaryNode<T>();
-  node = copy(this->getRoot());
-  output->insert(nullptr, node);
+BinaryNode<T> * BinaryTree<T>::getSuccessor(BinaryNode<T> * node) const
+{
+  if(!node) return nullptr;
+
+  BinaryNode<T> * output = node->getRight();
+  while (output->getLeft()) {
+    output = output->getLeft();
+  }
+  return output;
+
+}
+
+
+template <class T>
+BinaryNode<T> * BinaryTree<T>::getPredecessor(BinaryNode<T> * node) const
+{
+  if(!node) return nullptr;
+
+  BinaryNode<T> * output = node->getLeft();
+  while (output->getRight()) {
+    output = output->getRight();
+  }
   return output;
 }
-
-// REQUIRES: None.
-// MODIFIES: None
-//  EFFECTS: Copies the root node of a tree to output.
-// Copies the root of a tree.
-template <class T>
-BinaryNode<T> * BinaryTree<T>::copy(const BinaryNode<T> * node) const{
-  if (node){
-    BinaryNode<T> * output = new BinaryNode<T>();
-    output->setInfo(node->getInfo());
-    output->setRight(copy(node->getRight()));
-    output->setLeft(copy(node->getLeft()));
-    return output;
-  }
-  return nullptr;
-}
-
-
-template <class T>
-BinaryNode<T> * BinaryTree<T>::getMaxMin() const
-{
-  return getMaxMin(root);
-}
-
-
-template <class T>
-BinaryNode<T> * BinaryTree<T>::getMaxMin(BinaryNode<T> * node) const
-{
-  if (node != nullptr)
-  {
-    BinaryNode<T> * workingNode = node->getLeft();
-    while (workingNode != nullptr)
-    {
-      workingNode = workingNode->getRight();
-    }
-    return workingNode;
-  }
-  else
-  {
-    return nullptr;
-  }
-
-
-}
-
 #endif
