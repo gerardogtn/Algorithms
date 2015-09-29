@@ -15,16 +15,16 @@ template <class T>
 class BinaryNode {
 
 protected:
-  BinaryNode<T> * parent = nullptr;
-  BinaryNode<T> * left = nullptr;
-  BinaryNode<T> * right = nullptr;
+  //BinaryNode<T> * parent;
+  BinaryNode<T> * left;
+  BinaryNode<T> * right;
 
   T info;
 
 public:
 
-  BinaryNode() { }
-  BinaryNode(const T & _info) : info (_info) { }
+  BinaryNode();
+  BinaryNode(const T & _info);
   BinaryNode(const BinaryNode<T> & );
 
   virtual ~BinaryNode();
@@ -32,18 +32,34 @@ public:
   virtual T getInfo() const { return info; }
   virtual void setInfo(const T & value) { info = value; }
 
-  virtual BinaryNode<T> * getLeft() const { return left; }
-  virtual void setLeft(BinaryNode<T> * value) { left = value; }
+  virtual BinaryNode<T> * &getLeft() { return left; }
+  virtual void setLeft(BinaryNode<T> * &value) { left = value; }
 
-  virtual BinaryNode<T> * getRight() const { return right; }
-  virtual void setRight(BinaryNode<T> * value) { right = value; }
+  virtual BinaryNode<T> * &getRight() { return right; }
+  virtual void setRight(BinaryNode<T> * &value) { right = value; }
 
-  virtual BinaryNode<T> * getParent() const { return parent; }
-  virtual void setParent(BinaryNode<T> * value) { parent = value; }
+  //virtual BinaryNode<T> * getParent() const { return parent; }
+  //virtual void setParent(BinaryNode<T> * value) { parent = value; }
 
   template <typename Tn>
   friend std::ostream & operator << (std::ostream & os, const BinaryNode<Tn>  & node);
 };
+
+template <class T>
+BinaryNode<T>::BinaryNode()
+{
+  //parent = nullptr;
+  left = nullptr;
+  right = nullptr;
+}
+
+template <class T>
+BinaryNode<T>::BinaryNode(const T & _info) : info(_info)
+{
+  //parent = nullptr;
+  left = nullptr;
+  right = nullptr;
+}
 
 template <class T>
 BinaryNode<T>::BinaryNode(const BinaryNode<T> & other)
@@ -51,14 +67,16 @@ BinaryNode<T>::BinaryNode(const BinaryNode<T> & other)
   info = other.info;
   left = other.left;
   right = other.right;
-  parent = other.parent;
+  //parent = other.parent;
 }
 
 template <class T>
 BinaryNode<T>::~BinaryNode()
 {
   info.~T();
-  left = right = parent = nullptr;
+  left = nullptr;
+  right = nullptr;
+  //parent = nullptr;
 }
 
 
