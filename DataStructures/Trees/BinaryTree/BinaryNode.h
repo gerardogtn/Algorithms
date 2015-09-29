@@ -21,6 +21,12 @@ protected:
 
   T info;
 
+  virtual void makeRed() {};
+  virtual void makeBlack() {};
+
+  virtual bool isRed(){return false;};
+  virtual bool isBlack(){return !false;};
+
 public:
 
   BinaryNode();
