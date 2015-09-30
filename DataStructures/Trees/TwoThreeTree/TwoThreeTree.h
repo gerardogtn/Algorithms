@@ -18,11 +18,14 @@ public:
   void insert(const Record & newEntry);
   bool remove(const Record & target);
   bool search(const Record & target);
-  void printTree();
 
+  void printAscending();
+  void printDescending();
+
+  bool isBst(){return false;};
   bool isAvl(){return false;};
   bool isRedBlackTree(){return false;};
-  bool isBTree(){return true;}
+  bool isBTree(){return true;};
   bool isTwoThreeTree(){return true;};
 };
 
@@ -58,9 +61,15 @@ bool TwoThreeTree<Record>::search(const Record & target)
 }
 
 template <class Record>
-void TwoThreeTree<Record>::printTree()
+void TwoThreeTree<Record>::printAscending()
 {
-  tree->printTree();
+  tree->printAscending();
+}
+
+template <class Record>
+void TwoThreeTree<Record>::printDescending()
+{
+  tree->printDescending();
 }
 
 #endif
