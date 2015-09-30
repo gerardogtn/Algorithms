@@ -9,7 +9,7 @@ class TwoThreeTree
 {
 
 private:
-  BTree<Record, 3> * tree = nullptr;
+  BTree<Record, 3> * tree;
 
 public:
   TwoThreeTree();

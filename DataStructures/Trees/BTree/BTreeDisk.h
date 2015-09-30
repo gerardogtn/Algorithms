@@ -11,9 +11,9 @@ private:
   NodeDisk<Record, order> * _current;
   std::string rootName;
 
-  std::string getNode(Record target);
+  std::string getNode(Record & target);
 
-  bool searchTree(std::string currentId, Record target);
+  bool searchTree(std::string currentId, Record & target);
   bool searchNode(const Record & target, int & position);
 
   void pushDown(std::string currentId, const Record & newEntry,
@@ -88,24 +88,20 @@ bool BTreeDisk<Record, order>::search(Record target)
 // MODIFIES: None.
 // EFFECTS: Returns true if target was found.
 template <class Record, int order>
-bool BTreeDisk<Record, order>::searchTree(std::string currentId, Record target){
+bool BTreeDisk<Record, order>::searchTree(std::string currentId, Record &target){
   std::string outputFile;
   outputFile = getNode(target);
   if (outputFile != "NaN")
-  {
     return true;
-  }
   else
-  {
     return false;
-  }
 }
 
 // REQUIRES: None.
 // MODIFIES: None.
 // EFFECTS: If a node with target exists, return the node. Else return nullptr.
 template <class Record, int order>
-std::string BTreeDisk<Record, order>::getNode(Record target)
+std::string BTreeDisk<Record, order>::getNode(Record &target)
 {
   return getNode(rootName, target);
 }
@@ -180,6 +176,7 @@ void BTreeDisk<Record, order>::insert(const Record & newEntry)
     newRoot->setChildren(0, rootName);
     newRoot->setChildren(1, rightBranch);
     this->rootName = newRoot->getFileName();
+    cout << "root:" << this->rootName << endl;
     delete newRoot;
   }
 }
@@ -310,6 +307,7 @@ void BTreeDisk<Record, order>::splitNode(std::string currentId,
   rightHalf->setChildren(0, _current->getChildren(_current->getCount()));
   _current->decrementCount();
 
+  //delete rightHalf
 }
 
 // REQUIRES: None.
@@ -347,9 +345,7 @@ bool BTreeDisk<Record, order>::remove(std::string currentId,
   bool result = false;
 
   if (_current == nullptr)
-  {
     return false;
-  }
   else
   {
     if (searchNode(target, position))
@@ -376,9 +372,7 @@ bool BTreeDisk<Record, order>::remove(std::string currentId,
     {
       load(_current->getChildren(position));
       if (_current->getCount() < (order - 1)/2)
-      {
         restore(currentId, position);
-      }
       load(currentId);
     }
   }
@@ -393,9 +387,8 @@ template <class Record, int order>
 void BTreeDisk<Record, order>::removeData(int position)
 {
   for (int i = position; i < _current->getCount() - 1; i++)
-  {
     _current->setData(i, _current->getData(i + 1));
-  }
+
   _current->decrementCount();
 }
 
@@ -410,9 +403,7 @@ void BTreeDisk<Record, order>::copyInPredecessor(std::string currentId,
   load(_current->getChildren(position));
 
   while (_current->getChildren(_current->getCount()) != "NaN")
-  {
     load(_current->getChildren(_current->getCount()));
-  }
 
   Record data = _current->getData(_current->getCount() - 1);
 
@@ -575,8 +566,8 @@ void BTreeDisk<Record, order>::combine(int position)
     _current->setChildren(i + 1, _current->getChildren(i +  2));
   }
 
-  delete rightBranch;
-  delete leftBranch;
+  //delete rightBranch;
+  //delete leftBranch;
 }
 
 template <class Record, int order>
@@ -647,7 +638,9 @@ void BTreeDisk<Record, order>::printAscending(std::string currentId)
       if (i < temp->getCount())
         std::cout << temp->getData(i) << " ";
     }
+    printAscending(temp->getChildren(order - 1));
   }
+
   delete temp;
 }
 
@@ -660,11 +653,12 @@ void BTreeDisk<Record, order>::printDescending(std::string currentId)
 
   if (temp)
   {
-    for (int i = order - 1; i >= 0; i--)
+    printDescending(temp->getChildren(order - 1));
+    for (int i = order - 2; i >= 0; i--)
     {
-      printDescending(temp->getChildren(i));
       if (i < temp->getCount())
         std::cout << temp->getData(i) << " ";
+      printDescending(temp->getChildren(i));
     }
   }
   delete temp;

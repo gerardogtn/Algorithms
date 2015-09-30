@@ -10,9 +10,9 @@ class BTree
 private:
   Node<Record, order> * root;
 
-  Node<Record, order> * getNode(Record target);
+  Node<Record, order> * getNode(Record & target);
 
-  bool searchTree(Node<Record, order> * current, Record target);
+  bool searchTree(Node<Record, order> * current, Record & target);
   bool searchNode(Node<Record, order> * current, const Record & target, int & position);
 
   void pushDown(Node<Record, order> * current, const Record & newEntry,
@@ -39,7 +39,7 @@ public:
   virtual ~BTree();
 
   bool search(Record target);
-  Node<Record, order> * getNode(Node<Record, order> * current, Record target);
+  Node<Record, order> * getNode(Node<Record, order> * current, Record & target);
 
   void insert(const Record & newEntry);
   bool remove(const Record & target);
@@ -81,7 +81,7 @@ bool BTree<Record, order>::search(Record target)
 // MODIFIES: None.
 // EFFECTS: Returns true if target was found.
 template <class Record, int order>
-bool BTree<Record, order>::searchTree(Node<Record, order> * current, Record target){
+bool BTree<Record, order>::searchTree(Node<Record, order> * current, Record & target){
   Node<Record, order> * output;
   output = getNode(target);
   if (output)
@@ -98,7 +98,7 @@ bool BTree<Record, order>::searchTree(Node<Record, order> * current, Record targ
 // MODIFIES: None.
 // EFFECTS: If a node with target exists, return the node. Else return nullptr.
 template <class Record, int order>
-Node<Record, order> * BTree<Record, order>::getNode(Record target)
+Node<Record, order> * BTree<Record, order>::getNode(Record & target)
 {
   return getNode(root, target);
 }
@@ -107,7 +107,7 @@ Node<Record, order> * BTree<Record, order>::getNode(Record target)
 // MODIFIES: None.
 // EFFECTS: If a node with target exists, return the node. Else return nullptr.
 template <class Record, int order>
-Node<Record, order> * BTree<Record, order>::getNode(Node<Record, order> * current, Record target)
+Node<Record, order> * BTree<Record, order>::getNode(Node<Record, order> * current, Record & target)
 {
   bool isPresent = false;
   int position;
@@ -293,7 +293,6 @@ void BTree<Record, order>::splitNode(Node<Record, order> * current,
 // MODIFIES: this.
 // EFFECTS:Returns true if delete was succesful. Else (if target was not found)
 // Return false.
-// TODO: When deleting oldRoot a malloc error occurs.
 template <class Record, int order>
 bool BTree<Record, order>::remove(const Record & target){
   bool output = remove(root, target);
@@ -303,7 +302,6 @@ bool BTree<Record, order>::remove(const Record & target){
     Node<Record, order> * oldRoot = root;
     root = root->getChildren(0);
     oldRoot->setChildren(0, nullptr);
-    //delete oldRoot;
   }
 
   return output;
@@ -509,7 +507,7 @@ void BTree<Record, order>::combine(Node<Record, order> * current,
     current->setChildren(i + 1, current->getChildren(i +  2));
   }
 
-  delete rightBranch;
+  //delete rightBranch;
 }
 
 
@@ -538,6 +536,7 @@ void BTree<Record, order>::printAscending(Node<Record, order> * current)
       if (i < current->getCount())
         std::cout << current->getData(i) << " ";
     }
+    printAscending(current->getChildren(order - 1));
   }
 }
 
@@ -546,11 +545,12 @@ void BTree<Record, order>::printDescending(Node<Record, order> * current)
 {
   if (current)
   {
-    for (int i = order - 1; i >= 0; i--)
+    printDescending(current->getChildren(order - 1));
+    for (int i = order - 2; i >= 0; i--)
     {
-      printDescending(current->getChildren(i));
       if (i < current->getCount())
         std::cout << current->getData(i) << " ";
+      printDescending(current->getChildren(i));
     }
   }
 }

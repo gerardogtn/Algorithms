@@ -39,6 +39,8 @@ template <class Record, int order>
 Node<Record, order>::Node()
 {
   this->count = 0;
+  for (int i = 0; i < order - 1; i++)
+    data[i] = 0;
   for (int i = 0; i < order; i++)
   {
     children[i] = nullptr;
