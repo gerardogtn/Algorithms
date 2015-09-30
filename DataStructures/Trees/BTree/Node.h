@@ -62,13 +62,9 @@ template <class Record, int order>
 Node<Record, order> * Node<Record, order>::getChildren(const int position)
 {
   if (position < order  && position >= 0)
-  {
     return this->children[position];
-  }
   else
-  {
     throw IndexOutOfBoundsException();
-  }
 }
 
 // REQUIRES: None.
@@ -78,13 +74,9 @@ template <class Record, int order>
 Record & Node<Record, order>::getData(const int position)
 {
   if (position < order - 1 && position >= 0)
-  {
     return this->data[position];
-  }
   else
-  {
     throw IndexOutOfBoundsException();
-  }
 }
 
 // REQUIRES: None.
@@ -94,13 +86,9 @@ template <class Record, int order>
 void Node<Record, order>::setData(const int position, Record record)
 {
   if (position < order - 1 && position >= 0)
-  {
     this->data[position] = record;
-  }
   else
-  {
     throw IndexOutOfBoundsException();
-  }
 }
 
 // REQUIRES: None.
@@ -110,13 +98,9 @@ template <class Record, int order>
 void Node<Record, order>::setChildren(const int position, Node<Record, order> * node)
 {
   if (position < order && position >= 0)
-  {
     this->children[position] = node;
-  }
   else
-  {
     throw IndexOutOfBoundsException();
-  }
 }
 
 template <class Record, int order>
@@ -125,15 +109,8 @@ std::ostream & operator << (std::ostream & os, Node<Record, order>  & node)
   for (int i = 0; i < order - 1; i++)
   {
     if (i < node.getCount())
-    {
       os << node.getData(i) << " ";
-    }
-    else
-    {
-      os << "N ";
-    }
   }
-
   return os;
 }
 
