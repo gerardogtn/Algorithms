@@ -5,7 +5,7 @@
 // Makes a BTree of order 5 representation of the English alphabet.
 int main(int argc, const char * argv[])
 {
-  BTreeDisk<char, 5> * tree = new BTreeDisk<char, 5>();
+  BTreeDisk<char, 3> * tree = new BTreeDisk<char, 3>();
   std::cout << "====================== DECLARANDO ARBOL \n" << std::endl;
   tree->printAscending();
   tree->printDescending();
@@ -40,6 +40,13 @@ int main(int argc, const char * argv[])
   tree->insert('h');
   tree->insert('m');
   tree->insert('j');
+  tree->insert('b');
+  tree->insert('c');
+  tree->insert('l');
+  tree->insert('n');
+  tree->insert('o');
+  tree->insert('e');
+  tree->insert('i');
   std::cout << "K D H M J: insertada \n" << std::endl;
   tree->printAscending();
   tree->printDescending();
@@ -84,6 +91,6 @@ int main(int argc, const char * argv[])
   std::cout << (tree->search('l')? "Encontre L": "No encontre L") << std::endl;
   std::cout << (tree->search('m')? "Encontre M": "No encontre M") << std::endl;
 
-  delete tree;
+  //delete tree;
   return 0;
 }
