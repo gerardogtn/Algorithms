@@ -7,7 +7,8 @@ int main(int argc, const char * argv[])
 {
   BTree<char, 5> * tree = new BTree<char, 5>();
   std::cout << "====================== DECLARANDO ARBOL \n" << std::endl;
-  tree->printTree();
+  tree->printAscending();
+  tree->printDescending();
 
   std::cout << "====================== INSERTANDO 4 ELEMENTOS" << std::endl;
   tree->insert('a');
@@ -15,7 +16,8 @@ int main(int argc, const char * argv[])
   tree->insert('f');
   tree->insert('b');
   std::cout << "A, B, F, G: insertados \n" << std::endl;
-  tree->printTree();
+  tree->printAscending();
+  tree->printDescending();
 
   std::cout << "====================== BUSCANDO ELEMENTOS" << std::endl;
   std::cout << (tree->search('a')? "Encontre A": "No encontre A") << std::endl;
@@ -39,7 +41,8 @@ int main(int argc, const char * argv[])
   tree->insert('m');
   tree->insert('j');
   std::cout << "K D H M J: insertada \n" << std::endl;
-  tree->printTree();
+  tree->printAscending();
+  tree->printDescending();
 
   std::cout << "====================== BUSCANDO ELEMENTOS" << std::endl;
   std::cout << (tree->search('a')? "Encontre A": "No encontre A") << std::endl;
@@ -63,7 +66,8 @@ int main(int argc, const char * argv[])
   tree->remove('m');
   tree->remove('j');
   std::cout << "K D H M J: borradas \n" << std::endl;
-  tree->printTree();
+  tree->printAscending();
+  tree->printDescending();
 
   std::cout << "====================== BUSCANDO ELEMENTOS" << std::endl;
   std::cout << (tree->search('a')? "Encontre A": "No encontre A") << std::endl;
