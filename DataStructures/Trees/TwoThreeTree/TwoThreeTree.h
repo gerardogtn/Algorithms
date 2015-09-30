@@ -2,7 +2,7 @@
 #define  TwoThreeTree_h
 
 #include <iostream>
-#include "BTree.h"
+#include "../BTree/BTree.h"
 
 template <class Record>
 class TwoThreeTree
@@ -19,6 +19,11 @@ public:
   bool remove(const Record & target);
   bool search(const Record & target);
   void printTree();
+
+  bool isAvl(){return false;};
+  bool isRedBlackTree(){return false;};
+  bool isBTree(){return true;}
+  bool isTwoThreeTree(){return true;};
 };
 
 template <class Record>
