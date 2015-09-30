@@ -64,3 +64,6 @@ cxxtest-4.3/
 
 ## 
 a.out.DSYM/
+
+## BTree Data
+*.node*
