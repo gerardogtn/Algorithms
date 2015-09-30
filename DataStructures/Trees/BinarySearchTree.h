@@ -53,7 +53,4 @@ BNode<T> * BinarySearchTree<T>::search(const T value, BNode<T> * node)const {
 }
 
 
-
-
-
 #endif /* BinarySearchTree_h */
