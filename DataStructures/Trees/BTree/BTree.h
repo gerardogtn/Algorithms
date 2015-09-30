@@ -204,8 +204,7 @@ void BTree<Record, order>::pushDown(Node<Record, order> * current,
         }
         else
         {
-          splitNode(current,extraEntry, extraBranch, position, rightBranch, median);
-          std::cout << "Right branch: " << *rightBranch << std::endl;
+          splitNode(current, extraEntry, extraBranch, position, rightBranch, median);
           throw OverflowException();
         }
       }
