@@ -2,7 +2,7 @@
 #ifndef AvlTree_h
 #define AvlTree_h
 
-#include "BinarySearchTree.h"
+#include "../BinarySearchTree.h"
 
 template <class T>
 class AvlTree : public BinarySearchTree<T>{
