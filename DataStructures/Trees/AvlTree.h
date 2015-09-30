@@ -1,203 +1,263 @@
-#ifndef Avltree_h
-#define Avltree_h
 
+#ifndef AvlTree_h
+#define AvlTree_h
 
 #include "BinarySearchTree.h"
-#include <iomanip>
-#include <iostream>
+
 template <class T>
 class AvlTree : public BinarySearchTree<T>{
 
 public:
-  AvlTree();
-  virtual ~AvlTree();
+    AvlTree(){}
+    ~AvlTree();
 
-  BNode<T> * rotateright(BNode<T> * node);
-  BNode<T> * rotateleft(BNode<T> * node);
-  void balance(BNode<T> * p);
+    void leftRotation(BNode<T> * node);
+    void rigthRotation(BNode<T> * node);
+    void leftRightRotation(BNode<T> * node);
+    void rightLeftRotation(BNode<T> * node);
+    bool isAVL(BNode<T> * node);
+    void insert(BNode<T> * parent, BNode<T> * node);
+    void insert(T value);
+    void remove(T value);
+    void balance(BNode<T> * node);
 
-  virtual void insert(const T item);
-  virtual void insert(BNode<T> * item);
-
-  virtual bool remove(const T item);
-  virtual bool remove(BNode<T> * item);
-  void prettyPrint(BNode<T> * node, int indent);
+    BNode<T> * getMaxMin(BNode<T> * node) const;
+    BNode<T> * getMaxMin() const;
 
 };
 
 template <class T>
-AvlTree<T>::AvlTree() : BinarySearchTree<T>()
-{ }
+AvlTree<T>::~AvlTree(){}
 
 template <class T>
-AvlTree<T>::~AvlTree()
+bool AvlTree<T>::isAVL(BNode<T> * node){
+
+        if (node)
+        {
+            if (abs(this->getBalanceFactor(node)) > 1 )
+            {
+                return false;
+            }
+            return  isAVL(node->getRight()) && isAVL(node->getLeft());
+        }
+        else
+        {
+            return true;
+        }
+
+    }
+
+template <class T>
+void AvlTree<T>::rigthRotation(BNode<T> * pivot)
 {
-  this->clear();
+    BNode<T> * temp = pivot->getLeft();
+    if(pivot->getParent() && pivot->getInfo() <= pivot->getParent()->getInfo())
+    {
+        pivot->getParent()->setLeft(temp);
+    }
+    else if (pivot->getParent())
+    {
+        pivot->getParent()->setRight(temp);
+    }
+    else
+    {
+        this->setRoot(temp);
+    }
+    temp->setParent(pivot->getParent());
+    pivot->setParent(temp);
+    pivot->setLeft(temp->getRight());
+    temp->setRight(pivot);
+    if(pivot->getLeft())
+    {
+      pivot->getLeft()->setParent(pivot);
+    }
 }
 
 template <class T>
-BNode<T>* AvlTree<T>::rotateright(BNode<T> * node)
+void AvlTree<T>::leftRotation(BNode<T> * pivot)
 {
-  BNode<T> * pivot = node->getParent();
-  BNode<T> * temp = node->getRight();
-  bool isRoot = BinaryTree<T>::isRoot(pivot);
-
-  node->setParent(pivot->getParent());
-  node->setRight(pivot);
-  pivot->setLeft(temp);
-  pivot->setParent(node);
-
-  if (isRoot)
+  BNode<T> * temp = pivot->getRight();
+  if(pivot->getParent() && pivot->getInfo() <= pivot->getParent()->getInfo())
   {
-    BinaryTree<T>::forceSetRoot(node);
+    pivot->getParent()->setLeft(temp);
+  }
+  else if (pivot->getParent())
+  {
+    pivot->getParent()->setRight(temp);
   }
   else
   {
-    node->getParent()->setRight(node);
+    this->setRoot(temp);
   }
-  if(temp)
+  temp->setParent(pivot->getParent());
+  pivot->setParent(temp);
+  pivot->setRight(temp->getLeft());
+  temp->setLeft(pivot);
+  if(pivot->getRight())
   {
-    temp->setParent(pivot);
+    pivot->getRight()->setParent(pivot);
   }
-
-  return node;
-
 }
 
 template <class T>
-BNode<T>* AvlTree<T>::rotateleft(BNode<T> * node)
+void AvlTree<T>::leftRightRotation(BNode<T> * pivot)
 {
+  BNode<T> * temp = pivot->getRight();
+  leftRotation(pivot);
+  rigthRotation(temp->getParent());
+}
 
-  BNode<T> * pivot = node->getParent();
-  BNode<T> * temp = node->getLeft();
-  bool isRoot = BinaryTree<T>::isRoot(pivot);
+template <class T>
+void AvlTree<T>::rightLeftRotation(BNode<T> * pivot)
+{
+  BNode<T> * temp = pivot->getLeft();
+  rigthRotation(pivot);
+  leftRotation(temp->getParent());
+}
 
-  node->setParent(pivot->getParent());
-  node->setLeft(pivot);
-  pivot->setRight(temp);
-  pivot->setParent(node);
-
-  if (isRoot)
+template <class T>
+void AvlTree<T>::insert(BNode<T> * parent, BNode<T> * node)
+{
+  if (this->empty())
   {
-    BinaryTree<T>::forceSetRoot(node);
+    this->setRoot(node);
   }
   else
   {
-    node->getParent()->setLeft(node);
+    if(node->getInfo() < parent->getInfo())
+    {
+      if (parent->getLeft() == nullptr)
+      {
+        parent->setLeft(node);
+        node->setParent(parent);
+      }
+      else
+      {
+        insert(parent->getLeft(), node);
+      }
+    }
+    else if(node->getInfo() > parent->getInfo())
+    {
+      if (parent->getRight() == nullptr)
+      {
+        parent->setRight(node);
+        node->setParent(parent);
+      }
+      else
+      {
+        insert(parent->getRight(), node);
+      }
+    }
+    else
+    {
+      return;
+    }
+    balance(parent);
   }
-  if(temp)
-  {
-    temp->setParent(pivot);
-  }
-
-  return node;
 }
 
 template <class T>
 void AvlTree<T>::balance(BNode<T> * node)
 {
-  if (!node) return;
-  if(BinaryTree<T>::getBalanceFactor(node->getParent()) == 2)
+  if(this->getBalanceFactor(node->getParent()) == -2 && this->getBalanceFactor(node->getParent()->getLeft())== -1)
   {
-    rotateleft(node);
+    rigthRotation(node->getParent());
   }
-  if( BinaryTree<T>::getBalanceFactor(node->getParent()) == -2)
+  if(this->getBalanceFactor(node->getParent()) == -2 && this->getBalanceFactor(node->getParent()->getLeft())== 1)
   {
-    rotateright(node);
+    leftRightRotation(node);
   }
-  if(!this->isAvl())
+  if(this->getBalanceFactor(node->getParent()) == 2 && this->getBalanceFactor(node->getParent()->getRight())== 1)
   {
-    balance(node->getParent());
+      leftRotation(node->getParent());
+  }
+  if( (this->getBalanceFactor(node->getParent()) == 2 && this->getBalanceFactor(node->getParent()->getRight())== -1))
+  {
+      rightLeftRotation(node);
   }
 }
 
 template <class T>
-void AvlTree<T>::insert(const T item)
+void AvlTree<T>::insert(T value)
 {
-  BNode<T> * node = new BNode<T>(item);
-  insert(node);
+  BNode<T> * node = new BNode<T>(value);
+  insert(this->root, node);
 }
 
 template <class T>
-void AvlTree<T>::insert(BNode<T> * item)
+void AvlTree<T>::remove(T value)
 {
-  BinarySearchTree<T>::insert(item);
-  this->balance(item->getParent());
-}
-
-// REQUIRES: None.
-// MODIFIES: this.
-// EFFECTS:  Returns true if the element was found and was deleted.
-template <class T>
-bool AvlTree<T>::remove(const T item)
-{
-  return remove(BinarySearchTree<T>::searchGetNode(item));
-}
-
-// REQUIRES: item is in Avl Tree
-// MODIFIES: this.
-// EFFECTS: Returns true if item was deleted.
-// INVARIANT: Avl is balanced.
-template <class T>
-bool AvlTree<T>::remove(BNode<T> * item)
-{
-  if (item == nullptr)
+  BNode<T> * node = this->search(value);
+  if(node)
   {
-    return false;
-  }
-  else
-  {
-    BNode<T> * parent = item->getParent();
-    BNode<T> * leftChild = item->getLeft();
-    BNode<T> * rightChild = item->getRight();
-    BNode<T> * next = BinaryTree<T>::getMaxMin(item);
-    bool insertLeft = parent->getInfo() < item->getInfo();
-    if (insertLeft)
+    BNode<T> * parent = node->getParent();
+    BNode<T> * nnode = getMaxMin(node);
+    if(nnode)
     {
-      next->getParent()->setRight(next->getLeft());
-      next->setLeft(leftChild);
-      leftChild->setParent(next);
-      next->setParent(parent);
-      parent->setLeft(next);
-      next->setRight(rightChild);
-      rightChild->setParent(next);
+      nnode->setRight(node->getRight());
+      if(nnode->getRight())
+      {
+        nnode->getRight()->setParent(nnode);
+      }
+      nnode->getParent()->setRight(nnode->getLeft());
+      nnode->setParent(node->getParent());
+      if(node->getLeft() == nnode)
+      {
+          if(!nnode->getLeft())
+          nnode->setLeft(nullptr);
+      }
+      else
+      {
+        nnode->setLeft(node->getLeft());
+      }
+    }
+    if(!node->getParent())
+    {
+      BinaryTree<T>::setRoot(nnode);
+    }
+    else if(node->getInfo() <= node->getParent()->getInfo())
+    {
+      node->getParent()->setLeft(nnode);
     }
     else
     {
-      next->getParent()->setRight(next->getLeft());
-      next->setLeft(leftChild);
-      leftChild->setParent(next);
-      next->setParent(parent);
-      parent->setRight(next);
-      next->setRight(rightChild);
-      rightChild->setParent(next);
+      node->getParent()->setRight(nnode);
     }
-    delete item;
-
-    balance(next);
+    delete node;
+    balance(parent);
+    parent =  parent->getParent();
+    balance(parent);
   }
-  return true;
-
 }
 
 template <class T>
-void AvlTree<T>::prettyPrint(BNode<T> * p, int indent)
+BNode<T> * AvlTree<T>::getMaxMin() const
 {
-  if(p != nullptr)
+    return getMaxMin(this->root);
+}
+
+
+template <class T>
+BNode<T> * AvlTree<T>::getMaxMin(BNode<T> * node) const
+{
+  if (node)
   {
-    if(p->getRight()) {
-      prettyPrint(p->getRight(), indent+4);
+    BNode<T> * workingNode = node->getLeft();
+    if(workingNode)
+    {
+      while (workingNode->getRight() != nullptr)
+      {
+        workingNode = workingNode->getRight();
+      }
+      return workingNode;
     }
-    if (indent) {
-      std::cout << std::setw(indent) << ' ';
-    }
-    if (p->getRight()) std::cout<<" /\n" << std::setw(indent) << ' ';
-    std::cout<< p->getInfo() << "\n ";
-    if(p->getLeft()) {
-      std::cout << std::setw(indent) << ' ' <<" \\\n";
-      prettyPrint(p->getLeft(), indent+4);
-    }
+    return nullptr;
+  }
+  else
+  {
+    return nullptr;
   }
 }
 
-#endif
+
+#endif /* AvlTree_h */

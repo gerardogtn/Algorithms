@@ -45,6 +45,10 @@ public:
   virtual BNode<T> * getParent() const { return parent; }
   virtual void setParent(BNode<T> * value) { parent = value; }
 
+  bool isLeaf();
+  bool hasOneChild();
+  bool hasTwoChildren();
+
   template <typename Tn>
   friend std::ostream & operator << (std::ostream & os, const BNode<Tn>  & node);
 };
@@ -65,6 +69,23 @@ BNode<T>::~BNode()
   left = right = parent = nullptr;
 }
 
+template <class T>
+bool BNode<T>::isLeaf()
+{
+  return (this->getRight() == nullptr && this->getLeft() == nullptr);
+}
+
+template <class T>
+bool BNode<T>::hasOneChild()
+{
+  return (this->getRight() != nullptr || this->getLeft() != nullptr) && !this->hasTwoChildren();
+}
+
+template <class T>
+bool BNode<T>::hasTwoChildren()
+{
+  return this->getRight() != nullptr && this->getLeft() != nullptr;
+}
 
 template <class T>
 std::ostream & operator << (std::ostream & os, const BNode<T>  & node)
