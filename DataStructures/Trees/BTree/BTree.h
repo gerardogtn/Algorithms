@@ -31,7 +31,8 @@ private:
   void moveRight(Node<Record, order> * current, int position);
   void combine(Node<Record, order> * current, int position);
 
-  void printNode(Node<Record, order> * current);
+  void printAscending(Node<Record, order> * current);
+  void printDescending(Node<Record, order> * current);
 
 public:
   BTree();
@@ -43,7 +44,14 @@ public:
   void insert(const Record & newEntry);
   bool remove(const Record & target);
 
-  void printTree();
+  void printAscending();
+  void printDescending();
+
+  bool isBst(){return false;};
+  bool isAvl(){return false;};
+  bool isRedBlackTree(){return false;};
+  bool isBTree(){return true;};
+  bool isTwoThreeTree(){return order==3;};
 };
 
 template <class Record, int order>
@@ -504,23 +512,45 @@ void BTree<Record, order>::combine(Node<Record, order> * current,
   delete rightBranch;
 }
 
+
 template <class Record, int order>
-void BTree<Record, order>::printTree()
+void BTree<Record, order>::printAscending()
 {
-  std::cout << "++++++++++++ Imprimiendo arbol:" << std::endl;
-  printNode(root);
+  printAscending(root);
+  std::cout << std::endl;
 }
 
+template <class Record, int order>
+void BTree<Record, order>::printDescending()
+{
+  printDescending(root);
+  std::cout << std::endl;
+}
 
 template <class Record, int order>
-void BTree<Record, order>::printNode(Node<Record, order> * current)
+void BTree<Record, order>::printAscending(Node<Record, order> * current)
 {
   if (current)
   {
-    std::cout << *current << std::endl;
-    for (int i = 0; i < order; i++)
+    for (int i = 0; i < order - 1; i++)
     {
-      printNode(current->getChildren(i));
+      printAscending(current->getChildren(i));
+      if (i < current->getCount())
+        std::cout << current->getData(i) << " ";
+    }
+  }
+}
+
+template <class Record, int order>
+void BTree<Record, order>::printDescending(Node<Record, order> * current)
+{
+  if (current)
+  {
+    for (int i = order - 1; i >= 0; i--)
+    {
+      printDescending(current->getChildren(i));
+      if (i < current->getCount())
+        std::cout << current->getData(i) << " ";
     }
   }
 }
