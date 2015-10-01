@@ -1,5 +1,7 @@
 #include <iostream>
 #include <exception>
+#include <stdexcept>
+#include <sstream>
 using namespace std;
 
 class IndexOutOfBoundsException: public runtime_error
@@ -11,5 +13,5 @@ public:
   {
     return "Index for access was out of bounds";
   }
-  
+
 };
