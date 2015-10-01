@@ -27,11 +27,14 @@ int main(int argc, char const *argv[]) {
   std::cout << "Tiempo en microsegundos: " << rbt_i.count() << std::endl;
 
   std::cout << "++++++buscando: " << std::endl;
-  auto rbt_sb = std::chrono::high_resolution_clock::now();
+  std::cout << "++++++buscando: " << std::endl;
   for (int i = 0; i < 10; i++)
+  {
+    auto rbt_sb = std::chrono::high_resolution_clock::now();
     rbt->search(searchValues[i]);
-  auto rbt_se = std::chrono::high_resolution_clock::now();
-  auto rbt_s = std::chrono::duration_cast<std::chrono::microseconds>(rbt_se-rbt_sb);
-  std::cout << "Tiempo en microsegundos: " << rbt_s.count() << std::endl;
+    auto rbt_se = std::chrono::high_resolution_clock::now();
+    auto rbt_s = std::chrono::duration_cast<std::chrono::microseconds>(rbt_se-rbt_sb);
+    std::cout << "Busqueda elemento " << i <<": " << rbt_s.count() << std::endl;
+  }
 
 }

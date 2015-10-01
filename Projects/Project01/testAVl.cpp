@@ -15,23 +15,26 @@ int main(int argc, char const *argv[]) {
   for (int i = 0; i < 10; i++ )
     searchValues[i] = testValues[rand()%N];
 
+
     std::cout << "==================== Arbol AVL" << std::endl;
-    AvlTree<int> * avl = new AvlTree<int>();
+    AvlTree<int> * rbt = new AvlTree<int>();
 
     std::cout << "++++++insertando: " << std::endl;
-    auto avl_ib = std::chrono::high_resolution_clock::now();
+    auto rbt_ib = std::chrono::high_resolution_clock::now();
     for (int i = 0; i < N; i++)
-      avl->insert(testValues[i]);
-    auto avl_ie = std::chrono::high_resolution_clock::now();
-    auto avl_i = std::chrono::duration_cast<std::chrono::microseconds>(avl_ie-avl_ib);
-    std::cout << "Tiempo en microsegundos: " << avl_i.count() << std::endl;
+      rbt->insert(testValues[i]);
+    auto rbt_ie = std::chrono::high_resolution_clock::now();
+    auto rbt_i = std::chrono::duration_cast<std::chrono::microseconds>(rbt_ie-rbt_ib);
+    std::cout << "Tiempo en microsegundos: " << rbt_i.count() << std::endl;
 
     std::cout << "++++++buscando: " << std::endl;
-    auto avl_sb = std::chrono::high_resolution_clock::now();
     for (int i = 0; i < 10; i++)
-      avl->search(searchValues[i]);
-    auto avl_se = std::chrono::high_resolution_clock::now();
-    auto avl_s = std::chrono::duration_cast<std::chrono::microseconds>(avl_se-avl_sb);
-    std::cout << "Tiempo en microsegundos: " << avl_s.count() << std::endl;
+    {
+      auto rbt_sb = std::chrono::high_resolution_clock::now();
+      rbt->search(searchValues[i]);
+      auto rbt_se = std::chrono::high_resolution_clock::now();
+      auto rbt_s = std::chrono::duration_cast<std::chrono::microseconds>(rbt_se-rbt_sb);
+      std::cout << "Busqueda elemento " << i <<": " << rbt_s.count() << std::endl;
+    }
     return 0;
 }
