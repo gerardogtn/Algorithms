@@ -93,11 +93,7 @@ int main()
   auto rbt_i = std::chrono::duration_cast<std::chrono::microseconds>(rbt_ie-rbt_ib);
   std::cout << "Tiempo en microsegundos: " << rbt_i.count() << std::endl;
   std::cout << "++++++BFS: " << std::endl;
-   rbt_ib = std::chrono::high_resolution_clock::now();
   bfs(demo);
-   rbt_ie = std::chrono::high_resolution_clock::now();
-   rbt_i = std::chrono::duration_cast<std::chrono::microseconds>(rbt_ie-rbt_ib);
-  std::cout << "Tiempo en microsegundos: " << rbt_i.count() << std::endl;
   std::cout << "++++++PRIM: " << std::endl;
    rbt_ib = std::chrono::high_resolution_clock::now();
   prim(demo);
@@ -111,11 +107,7 @@ int main()
    rbt_i = std::chrono::duration_cast<std::chrono::microseconds>(rbt_ie-rbt_ib);
   std::cout << "Tiempo en microsegundos: " << rbt_i.count() << std::endl;
   std::cout << "++++++DJIKSTRA: " << std::endl;
-   rbt_ib = std::chrono::high_resolution_clock::now();
   djikstra(demo);
-   rbt_ie = std::chrono::high_resolution_clock::now();
-   rbt_i = std::chrono::duration_cast<std::chrono::microseconds>(rbt_ie-rbt_ib);
-  std::cout << "Tiempo en microsegundos: " << rbt_i.count() << std::endl;
   std::cout << "++++++FLOYD-WARSHALL: " << std::endl;
    rbt_ib = std::chrono::high_resolution_clock::now();
   fw(demo);
@@ -286,7 +278,7 @@ void bfs(graph_t &g)
   int s;
   std::cout << "Insert the vertex to start the breadth first search: ";
   std::cin >> s;
-
+  auto rbt_ib = std::chrono::high_resolution_clock::now();
   int N = boost::num_vertices(g);
   std::vector <size_type> dtime(num_vertices(g));
   size_type time = 0;
@@ -298,6 +290,9 @@ void bfs(graph_t &g)
   std::copy(range.begin(), range.end(), discover_order.begin());
   std::sort(discover_order.begin(), discover_order.end(),
             indirect_cmp <Iiter, std::less <size_type>>(&dtime[0]));
+  auto rbt_ie = std::chrono::high_resolution_clock::now();
+  auto rbt_i = std::chrono::duration_cast<std::chrono::microseconds>(rbt_ie-rbt_ib);
+  std::cout << "Tiempo en microsegundos: " << rbt_i.count() << std::endl;
 
   std::cout << "Order of discovery: ";
   for (int i = 0; i < N; ++i){
@@ -337,7 +332,7 @@ void djikstra(graph_t &g)
   int start;
   std::cout << "Insert the index of the node were djikstra should start: " << std::endl;
   std::cin >> start;
-
+  auto rbt_ib = std::chrono::high_resolution_clock::now();
   property_map<graph_t, edge_weight_t>::type weightmap = get(edge_weight, g);
   std::vector<vertex_descriptor> p(num_vertices(g));
   std::vector<int> d(num_vertices(g));
@@ -346,7 +341,10 @@ void djikstra(graph_t &g)
   dijkstra_shortest_paths(g, s,
                           predecessor_map(boost::make_iterator_property_map(p.begin(), get(boost::vertex_index, g))).
                           distance_map(boost::make_iterator_property_map(d.begin(), get(boost::vertex_index, g))));
-
+  
+  auto rbt_ie = std::chrono::high_resolution_clock::now();
+  auto rbt_i = std::chrono::duration_cast<std::chrono::microseconds>(rbt_ie-rbt_ib);
+  std::cout << "Tiempo en microsegundos: " << rbt_i.count() << std::endl;
   std::cout << "distances and parents:" << std::endl;
   graph_traits <graph_t>::vertex_iterator vi, vend;
   for (boost::tie(vi, vend) = vertices(g); vi != vend; ++vi) {
