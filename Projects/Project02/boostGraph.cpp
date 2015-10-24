@@ -2,6 +2,7 @@
 #include <algorithm>
 #include <iterator>
 #include <iostream>
+#include <chrono>
 
 #include "dfs_time_visitor.cpp"
 #include "bfs_time_visitor.cpp"
@@ -85,12 +86,42 @@ int main()
   addEdge(13, 14,  6, true, demo);
   addEdge(14, 13,  2, true, demo);
 
+  std::cout << "++++++DFS: " << std::endl;
+  auto rbt_ib = std::chrono::high_resolution_clock::now();
   dfs(demo);
+  auto rbt_ie = std::chrono::high_resolution_clock::now();
+  auto rbt_i = std::chrono::duration_cast<std::chrono::microseconds>(rbt_ie-rbt_ib);
+  std::cout << "Tiempo en microsegundos: " << rbt_i.count() << std::endl;
+  std::cout << "++++++BFS: " << std::endl;
+   rbt_ib = std::chrono::high_resolution_clock::now();
   bfs(demo);
+   rbt_ie = std::chrono::high_resolution_clock::now();
+   rbt_i = std::chrono::duration_cast<std::chrono::microseconds>(rbt_ie-rbt_ib);
+  std::cout << "Tiempo en microsegundos: " << rbt_i.count() << std::endl;
+  std::cout << "++++++PRIM: " << std::endl;
+   rbt_ib = std::chrono::high_resolution_clock::now();
   prim(demo);
+   rbt_ie = std::chrono::high_resolution_clock::now();
+   rbt_i = std::chrono::duration_cast<std::chrono::microseconds>(rbt_ie-rbt_ib);
+  std::cout << "Tiempo en microsegundos: " << rbt_i.count() << std::endl;
+  std::cout << "++++++KRUSKAL: " << std::endl;
+   rbt_ib = std::chrono::high_resolution_clock::now();
   kruskal(demo);
+   rbt_ie = std::chrono::high_resolution_clock::now();
+   rbt_i = std::chrono::duration_cast<std::chrono::microseconds>(rbt_ie-rbt_ib);
+  std::cout << "Tiempo en microsegundos: " << rbt_i.count() << std::endl;
+  std::cout << "++++++DJIKSTRA: " << std::endl;
+   rbt_ib = std::chrono::high_resolution_clock::now();
   djikstra(demo);
+   rbt_ie = std::chrono::high_resolution_clock::now();
+   rbt_i = std::chrono::duration_cast<std::chrono::microseconds>(rbt_ie-rbt_ib);
+  std::cout << "Tiempo en microsegundos: " << rbt_i.count() << std::endl;
+  std::cout << "++++++FLOYD-WARSHALL: " << std::endl;
+   rbt_ib = std::chrono::high_resolution_clock::now();
   fw(demo);
+   rbt_ie = std::chrono::high_resolution_clock::now();
+   rbt_i = std::chrono::duration_cast<std::chrono::microseconds>(rbt_ie-rbt_ib);
+  std::cout << "Tiempo en microsegundos: " << rbt_i.count() << std::endl;
   printgraph(demo);
 
   std::cout << "Interactive Demo: \n" << std::endl;
