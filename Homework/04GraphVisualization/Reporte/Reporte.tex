@@ -1,0 +1,93 @@
+\documentclass{sig-alternate-05-2015}
+
+\begin{document}
+
+
+\title{Visualizacion de Grafos}
+\subtitle{Uso de SNAP para procesar grafos y Graphy para visualizacion}
+
+
+% TODO: Update address.
+% TODO: Check university length. 
+\author{
+Gerardo Garcia Teruel Noriega\\
+       \affaddr{Instituto Tecnologico y de Estudios Superiores de Monterrey, Campus Santa Fe}\\
+       \affaddr{1932 Wallamaloo Lane}\\
+       \affaddr{Mexico DF, Mexico}\\
+       \email{A01018057@itesm.mx}
+       }
+       
+\maketitle
+
+
+% TODO: Update abstract. 
+\begin{abstract}
+This paper provides a sample of a \LaTeX\ document which conforms,
+somewhat loosely, to the formatting guidelines for
+ACM SIG Proceedings. It is an {\em alternate} style which produces
+a {\em tighter-looking} paper and was designed in response to
+concerns expressed, by authors, over page-budgets.
+It complements the document \textit{Author's (Alternate) Guide to
+Preparing ACM SIG Proceedings Using \LaTeX$2_\epsilon$\ and Bib\TeX}.
+This source file has been written with the intention of being
+compiled under \LaTeX$2_\epsilon$\ and BibTeX.
+
+The developers have tried to include every imaginable sort
+of ``bells and whistles", such as a subtitle, footnotes on
+title, subtitle and authors, as well as in the text, and
+every optional component (e.g. Acknowledgments, Additional
+Authors, Appendices), not to mention examples of
+equations, theorems, tables and figures.
+
+To make best use of this sample document, run it through \LaTeX\
+and BibTeX, and compare this source code with the printed
+output produced by the dvi file. A compiled PDF version
+is available on the web page to help you with the
+`look and feel'.
+\end{abstract}
+
+
+
+\keywords{Graph, Snap library, Graphy, Twitter, Network Analysis, Graph Visualization; \LaTeX; text tagging}
+
+
+\section{Introduccion}
+En este artículo, se genera un grafo de conexiones en Twitter utilizando un dataset de SNAP y procesándolo en C++ con la misma librería de SNAP. El procesamiento del grafo mediante la exportación en 5 formatos: GraphML, GEXF, GDF y GraphSon. Posteriormente se utilizo Gephi para visualizar el grafo y obtener información relevante para su análisis. 
+
+\section{Procesmiento del grafo}
+
+\subsection{Importacion del grafo a SNAP}
+Se descargo la informaci'on del grafo de https://snap.stanford.edu/data/index.html, el formato se descomprimio en formato txt y este a su vez fue importado a snap utilizando la siguiente linea de codigo: 
+
+\begin{verbatim}
+PGraph Graph = TSnap::LoadEdgeList<PUNGraph>("twitter_combined.txt",0,1);
+\end{verbatim}
+
+\subsection{Exportacion del grafo}
+El grafo se exporto en 5 formatos: GraphML, GEXF, GDF y GraphSON. 
+
+\subsubsection{GraphML}
+GraphML es un formato para almacenar grafos basado en XML disenado bajo los pilares de: simplicidad, generalidad, extensibilidad, robusto. El formato consiste en 
+
+
+
+Busque en Internet la biblioteca para la implementación de grafos SNAP y genere con la misma un grafo a partir de alguno de los datasets que aparecen en https://snap.stanford.edu/data/index.html. Una vez importado el dataset seleccionado  implemente las funciones que permitan:
+
+Exportar el grafo en formato GraphML
+Exportar el grafo en formato GEXF
+Exportar el grafo en formato GDF
+Exportar el grafo en formato JSON Graph Format (vea GraphSON)
+Posteriormente, exporte el grafo en cada uno de los formatos especificados y utilizando un programa como Gephi, importe uno de los grafos y muestre su representación gráfica. Explore las opciones de la herramienta Gephi y obtenga información relevante referente a la información almacenada en el grafo.
+Finalmente, genere un artículo de investigación donde incluya:
+la actividad realizada paso a paso, incluyendo imágenes del grafo una vez visualizado en Gephi
+las ventajas y desventajas de cada formato de exportación utilizado, 
+la complejidad temporal y espacial de cada una de las funciones de exportación (4 en total)
+el tiempo de ejecución de cada función de exportación
+las ventajas y desventajas que tiene la utilización de programas como Gephi para la visualización de grafos
+las referencias bibliográficas en el formato correcto
+los códigos de cada función de exportación como anexos del artículo
+la liga al repositorio de GitHub donde se encuentren los códigos programados
+El articulo de investigación debe seguir el formato de la ACM el cual puede encontrar en http://www.acm.org/publications/article-templates/proceedings-template.html/ . La fecha de término de la actividad es el 29 de octubre de 2015 a las 23:55.
+No se aceptan trabajos fuera de fecha ni por correo electrónico. En ambos casos la calificación de la tarea será 0 puntos.
+
+\end{document}
