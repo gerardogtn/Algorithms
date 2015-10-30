@@ -1,0 +1,17 @@
+\begin{thebibliography}{}
+
+\bibitem[\protect\astroncite{Tamassia}{2013}]{graphml-brandes}
+Tamassia, R., editor (2013).
+\newblock {\em Handbook of Graph Drawing and Visualization}, chapter 16: Graph
+  Markup Language (GraphML).
+\newblock CRC Press.
+
+\bibitem[\protect\astroncite{Unknown}{a}]{gephi-tuto}
+Unknown.
+\newblock Gephi - quick start.
+
+\bibitem[\protect\astroncite{Unknown}{b}]{gexf}
+Unknown.
+\newblock Gexf file format.
+
+\end{thebibliography}

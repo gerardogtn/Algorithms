@@ -1,4 +1,8 @@
 \documentclass{sig-alternate-05-2015}
+\usepackage{listings,multicol}
+\usepackage{natbib}
+\usepackage{hyperref}
+\usepackage{listings}
 
 \begin{document}
 
@@ -7,12 +11,10 @@
 \subtitle{Uso de SNAP para procesar grafos y Graphy para visualizacion}
 
 
-% TODO: Update address.
-% TODO: Check university length. 
 \author{
 Gerardo Garcia Teruel Noriega\\
-       \affaddr{Instituto Tecnologico y de Estudios Superiores de Monterrey, Campus Santa Fe}\\
-       \affaddr{1932 Wallamaloo Lane}\\
+       \affaddr{Instituto Tecnológico y de Estudios Superiores de Monterrey, Campus Santa Fe}\\
+       \affaddr{100 Av. Carlos Lazo}\\
        \affaddr{Mexico DF, Mexico}\\
        \email{A01018057@itesm.mx}
        }
@@ -22,72 +24,339 @@ Gerardo Garcia Teruel Noriega\\
 
 % TODO: Update abstract. 
 \begin{abstract}
-This paper provides a sample of a \LaTeX\ document which conforms,
-somewhat loosely, to the formatting guidelines for
-ACM SIG Proceedings. It is an {\em alternate} style which produces
-a {\em tighter-looking} paper and was designed in response to
-concerns expressed, by authors, over page-budgets.
-It complements the document \textit{Author's (Alternate) Guide to
-Preparing ACM SIG Proceedings Using \LaTeX$2_\epsilon$\ and Bib\TeX}.
-This source file has been written with the intention of being
-compiled under \LaTeX$2_\epsilon$\ and BibTeX.
-
-The developers have tried to include every imaginable sort
-of ``bells and whistles", such as a subtitle, footnotes on
-title, subtitle and authors, as well as in the text, and
-every optional component (e.g. Acknowledgments, Additional
-Authors, Appendices), not to mention examples of
-equations, theorems, tables and figures.
-
-To make best use of this sample document, run it through \LaTeX\
-and BibTeX, and compare this source code with the printed
-output produced by the dvi file. A compiled PDF version
-is available on the web page to help you with the
-`look and feel'.
+En este artículo se demuestra el uso de SNAP y C++ para convertir un grafo
+a distintos formatos de almacenamiento de grafo, luego de procesar dicho 
+grafo, se utiliza la herramienta de Gephi para su visualización y procesamiento. 
 \end{abstract}
 
 
 
-\keywords{Graph, Snap library, Graphy, Twitter, Network Analysis, Graph Visualization; \LaTeX; text tagging}
+\keywords{Graph, Snap library, Gephi, Network Analysis,
+ Graph Visualization}
 
 
-\section{Introduccion}
+\section{Introducción}
 En este artículo, se genera un grafo de conexiones en Twitter utilizando un dataset de SNAP y procesándolo en C++ con la misma librería de SNAP. El procesamiento del grafo mediante la exportación en 5 formatos: GraphML, GEXF, GDF y GraphSon. Posteriormente se utilizo Gephi para visualizar el grafo y obtener información relevante para su análisis. 
 
-\section{Procesmiento del grafo}
+\section{Procesamiento del grafo}
 
-\subsection{Importacion del grafo a SNAP}
-Se descargo la informaci'on del grafo de https://snap.stanford.edu/data/index.html, el formato se descomprimio en formato txt y este a su vez fue importado a snap utilizando la siguiente linea de codigo: 
+\subsection{Importación del grafo a SNAP}
+Se descargó la información del grafo de \url{https://snap.stanford.edu/data/index.html}, el formato se descomprimió en formato txt y este a su vez fue importado a snap utilizando la siguiente linea de código: 
 
 \begin{verbatim}
-PGraph Graph = TSnap::LoadEdgeList<PUNGraph>("twitter_combined.txt",0,1);
+PGraph Graph = 
+    TSnap::LoadEdgeList<PUNGraph>("wiki_vote.txt",0,1);
 \end{verbatim}
 
-\subsection{Exportacion del grafo}
+\subsection{Exportación del grafo}
 El grafo se exporto en 5 formatos: GraphML, GEXF, GDF y GraphSON. 
 
 \subsubsection{GraphML}
-GraphML es un formato para almacenar grafos basado en XML disenado bajo los pilares de: simplicidad, generalidad, extensibilidad, robusto. El formato consiste en 
+GraphML es un formato para almacenar grafos basado en XML diseñado bajo los pilares de: simplicidad, generalidad, extensibilidad, robusto \citep{graphml-brandes}. El formato consiste en el header por defecto de XML, seguido de las URLs de un graphml y dentro de el se encuentra 1 o más grafos:
+
+\begin{verbatim}
+<?xml version="1.0" encoding="UTF-8"?>
+<graphml xmlns="http://graphml.graphdrawing.org/xmlns"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://graphml.graphdrawing.org/xmlns
+     http://graphml.graphdrawing.org/xmlns/1.1/graphml.xsd">
+     <graph>
+     </graph>
+     <graph>
+     </graph>
+</graphml>
+\end{verbatim}
+
+Dentro de los tags de graph se encuentra un tag node por cada nodo, que contiene su id y después de especificar todos los nodos del grafo un tag de edge por cada arista del grafo en que se especifica su id, si se trata de un nodo dirigido o no, el id del nodo origen y del nodo distante y, si es necesario, su peso. Por ejemplo: 
+
+\begin{verbatim}
+<graph> 
+    <node id="n1"/>
+    <node id="n2"/>
+    <edge id="e1" directed="true" source="n1" 
+               destination="n2"/>
+</graph>
+\end{verbatim}
+
+\subsubsection{GEXF}
+El formato GEXF \citep{gexf}, al igual que el formato GraphML, esta basado en XML y tiene dos diferencias fundamentales con este formato: (a)El header de XML es diferente y (b) Se especifica una sección para nodos y una sección para aristas; esto permite que el procesamiento del grafo sea superior ya que el parser no tiene que identificar en cada tag si se trata de un nodo, mientras un elemento se encuentre en la sección de nodes, el parser lo identificara como un nodo. Un ejemplo básico de este formato se muestra a continuación:
+
+\begin{verbatim}
+<?xml version="1.0" encoding="UTF-8"?>
+<gexf xmlns="http://www.gexf.net/1.2draft" 
+          version="1.2">
+  <graph mode="static" defaultedgetype="directed">
+    <nodes>
+      <node id="n1"/>
+      <node id="n2"/>
+    </nodes>
+    <edges>
+    	<edge id="e1" directed="true" source="e1"
+	            target="e2"/>
+    </edges>
+  </graph>
+</gexf>
+\end{verbatim}
+
+\subsubsection{GDF}
+El formato GDF\citep{gdf} es de los mas sencillos para el almacenamiento de grafos y es similar al formato CSV,  un documento GDF consiste de dos secciones principales, una sección de nodos (que comprende los identificadores de los nodos) y una sección de aristas (que comprende los identificadores del nodo origen y del nodo destino. Cada identificador tiene un tipo de dato asociado y se le puede asociar información extra a los nodos y a las aristas. Es importante hacer notar que este formato no soporta guardar multiples grafos dentro de un mismo archivo, algo que si es soportado for graphml y GEXF. Un ejemplo sencillo es el siguiente: 
+
+\begin{verbatim}
+nodedef> name VARCHAR
+1 
+2
+edgedef> node1 VARCHAR, node2 VARCHAR, weight DOUBLE
+1, 2, 0.5
+\end{verbatim}
+
+\subsubsection{GraphSON}
+
+El formato GraphSON\citep{graphson} es un formato nuevo para el almacenamiento de grafos que se basa en JSON en lugar de utilizar XML o CSV. Este formato es preferido para APIs REST para comunicación con servidores por que el método de parsing es mas sencillo. Por ello, este formato es adecuado para aplicaciones que envíen grafos a distintos clientes que consumen una API de un backend. Un ejemplo sencillo es el siguiente:
+
+\begin{verbatim}
+{
+    "graph": {
+        "mode": "NORMAL", 
+        "vertices": [
+            {
+                "_id": "1",
+                "_type": "vertex"
+            },
+            {
+                "_id": "2",
+                "_type": "vertex"
+            }
+        ],
+        "edges": [
+            {
+                "_id": "0",
+                "_type": "edge"
+                "_outV": "1"
+                "_inV": "2"
+            }
+        ]
+    }
+}
+        
+\end{verbatim}
+
+% TODO: CAMBIAR INFO DE COMPU A UN FOOTNOTE. 
+\subsubsection{Comparación de formatos}
+Para comparar los formatos de grafos, existen dos aspectos a considerar: la funcionalidad que el formato permite implementar y la complejidad de almacenar en dicho formato. Considerando la complejidad de almacenar en cada formato, en la siguiente tabla se muestra tanto el tiempo de ejecución de cada algoritmo en una computadora con OS 10.11, procesador Intel Core i5 con 2.5GHz de procesamiento y memoria de 4GB a 1600Mhz así como la complejidad de cada algoritmo implementado en C++ y disponible en: \url{https://github.com/gerardogtn/Algorithms/blob/master/Homework/04GraphVisualization/testgraph.cpp}
+
+\vspace{5mm} 
+
+\begin{tabular}{| p{2.2cm} | p{2.2cm} | p{2.2cm}|}
+Algoritmo              & Complejidad temporal & Tiempo de ejecución (ms)  \\
+\hline
+GraphML    & O(V+E) &   308556 \\
+GEXF         & O(V+E) &   471992  \\
+GDF           & O(V+E) &   149761  \\
+GraphSON & O(V+E) & 2626211  \\
+\end{tabular}
+
+\vspace{5mm} 
+
+Como podemos notar, el algoritmo de GDF es el mas rápido ya que el formato del archivo es mínimo. Por otro lado, el formato de GraphML y GEXF son muy similares ya que los formatos son similares. Por ultimo el algoritmo de GraphSON tiene el tiempo de ejecución mas grande ya que el hecho de que todos los elementos de un arreglo deben de tener una coma entre ellos exceptuando el ultimo agrega complejidad temporal al algoritmo. 
+
+En cuanto a la funcionalidad que cada formato permite implementar, el formato GDF es el mas limitado ya que solo permite indicar todos los nodos y todas las aristas en un listado, pero no permite añadir características del grafo ni de los nodos. Por otro lado, los formatos GraphML, GEXFy GraphSON permiten añadir multiples grafos de diferentes tipos (dirigidos y no dirigidos) y con más información en cada nodo o arista; por ello, son los formatos recomendados para el almacenamiento de grafos. Cabe destacar que los formatos GraphML y GEXF son preferidos para almacenamiento local porque la complejidad de almacenar en dicho formato es menor; no obstante, para aplicaciones que almacenan grafos en un servidor y se comunican con un API REST se sugiere utilizar GraphSON. Por último, cabe mencionar que la complejidad temporal del algoritmo para almacenar en GraphSON puede ser mejorada si se implementa un algoritmo que te permita obtener el ultimo nodo y arista de un grafo y de esta manera evitar una comparación extra en la iteración del algoritmo para obtener aristas y nodos. 
 
 
+\section{Uso de Gephi para visualizar un grafo}
+Para la visualización del grafo en Gephi, se utilizo el tutorial de Getting Started\citep{gephi-tuto} en la pagina oficial de Gephi, los pasos fueron los siguientes: (a) Cargar un grafo, (b) Utilizar un layout para cambiar la visualización, (d) Analizar y colorear por clusters, (d) Analizar el camino promedio del grafo y (e) Filtrar los nodos con pocas conexiones. El resultado final se muestra en la Figura 2. 
 
-Busque en Internet la biblioteca para la implementación de grafos SNAP y genere con la misma un grafo a partir de alguno de los datasets que aparecen en https://snap.stanford.edu/data/index.html. Una vez importado el dataset seleccionado  implemente las funciones que permitan:
+\subsection{Cargar un grafo}
+Para cargar un grafo, se utilizo uno de los formatos de exportación de la sección pasada (todos son soportados por Gephi con excepción de GraphSON), utilizando Ctrl+O se importo el grafo y se confirmo en el dialogo que se mostró a continuación. Es importante notar que si existen problemas con el formato, Gephi los reportara; por tanto esta es una buena herramienta para confirmar que los algoritmos de exportación funcionan correctamente. 
 
-Exportar el grafo en formato GraphML
-Exportar el grafo en formato GEXF
-Exportar el grafo en formato GDF
-Exportar el grafo en formato JSON Graph Format (vea GraphSON)
-Posteriormente, exporte el grafo en cada uno de los formatos especificados y utilizando un programa como Gephi, importe uno de los grafos y muestre su representación gráfica. Explore las opciones de la herramienta Gephi y obtenga información relevante referente a la información almacenada en el grafo.
-Finalmente, genere un artículo de investigación donde incluya:
-la actividad realizada paso a paso, incluyendo imágenes del grafo una vez visualizado en Gephi
-las ventajas y desventajas de cada formato de exportación utilizado, 
-la complejidad temporal y espacial de cada una de las funciones de exportación (4 en total)
-el tiempo de ejecución de cada función de exportación
-las ventajas y desventajas que tiene la utilización de programas como Gephi para la visualización de grafos
-las referencias bibliográficas en el formato correcto
+\subsection{Utilizar un layout para cambiar la visualización}
+Gephi permite utilizar algoritmos de layouts para mover los nodos de un grafo y visualizarlo con m'as facilidad, se recomienda probar con distintos algoritmos e incluso combinarlos para observar los distintos resultados y seleccionar el que mejor se adapte al grafo. En este caso se utilizo el algoritmo de Force Atlas 2 y se detuvo el algoritmo una vez que se obtuvieron resultados favorables.  
+
+\subsection{Analizar clusters}
+Los clusters son un conjunto de nodos que comparten muchas interconexiones entre ellos, Gephi te permite identificarlos si se realiza en primer lugar un análisis de la modularidad del grafo(en la sección de estadístico) y después en la sección de partition utilizar la información de módulos para visualizar los clusters con diferentes colores. En el grafo utilizado, se encontraron 391 comunidades con una modularización de 0.858. En la Figura 1 se muestra el gráfico de distribución de tamaño encontrada con el análisis de modularidad mencionado previamente
+
+\begin{figure}
+\centering
+\includegraphics[width=8cm]{communities-size-distribution}
+\caption{Distribucion de tama;o}
+\end{figure}
+
+\subsection{Analizar el camino promedio de un grafo}
+Un análisis común de grafos indica el camino promedio para llegar de un nodo arbitrario a cualquier otro nodo arbitrario, en la cultura popular esta media esta asociada con la teoría de 6 grados de separación, Gephi tiene una herramienta estadístico que permite obtener esta información. Para el grafo procesado, se obtuvo un promedio de longitud de camino de 6.0485 y esta misma herramienta genero la Figura 2, en la que se muestra la distribución de excentricidad con una distribución de camello. Las ventajas de utilizar Gephi consisten en que tiene algoritmos para análisis y visualización de grafos muy poderosas y tiene aplicación disponible para Windows, Mac OS y Linux. No obstante el problema de Gephi radica en que sigue en su version Beta (0.8.0) y que utiliza demasiados recursos del sistema; por ejemplo para la realización de este reporte se empezó con un grafo de 80,000 nodos y 1,000,000 de aristas, luego se utilizo un grafo de 20,000 nodos  y 100,000 aristas y por 'ultimo se utilizo un grafo con 6,000 nodos y 15,000 aristas ya que Gephi ocupa demasiados recursos del sistema para poder procesar los grafos. 
+
+\subsection{Filtrar los nodos con pocas conexiones}
+Para poder visualizar los nodos del grafo que mas conexiones y m'as importancia tienen, se eliminaron los nodos con menos de 4 conexiones. Para hacer esto se agrego un filtro por grado de topología. 
+
+\begin{figure}
+\centering
+\includegraphics[width=8cm]{Eccentricity_Distribution}
+\caption{Distribución de tamaño}
+\end{figure}
+
+\begin{figure*}
+\centering
+\includegraphics[width=18cm]{graph}
+\caption{Resultado de visualización en Gephi}
+\end{figure*}
+
 los códigos de cada función de exportación como anexos del artículo
-la liga al repositorio de GitHub donde se encuentren los códigos programados
-El articulo de investigación debe seguir el formato de la ACM el cual puede encontrar en http://www.acm.org/publications/article-templates/proceedings-template.html/ . La fecha de término de la actividad es el 29 de octubre de 2015 a las 23:55.
-No se aceptan trabajos fuera de fecha ni por correo electrónico. En ambos casos la calificación de la tarea será 0 puntos.
+
+\bibliographystyle{apa}
+\bibliography{citations}
+
+
+\appendix
+
+\section {GraphML}
+
+\begin{lstlisting}[numbers=left,breaklines=true]
+void graphMl(PNGraph Graph){
+  std::ofstream graphml;
+  graphml.open("graph.graphml");
+  graphml << "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n";
+  graphml << "<graphml xmlns=\"http://graphml.graphdrawing.org/xmlns\"\n";
+  graphml << "    xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\"\n";
+  graphml << "    xsi:schemaLocation=\"http://graphml.graphdrawing.org/xmlns\n";
+  graphml << "     http://graphml.graphdrawing.org/xmlns/1.1/graphml.xsd\">\n";
+
+  graphml << "  <graph id=\"G\" edgedefault=\"directed\">\n";
+
+  int i = 0;
+  for (TNGraph::TNodeI NI = Graph->BegNI(); NI < Graph->EndNI(); NI++){
+    graphml << "    <node id=\"" << NI.GetId() << "\"/>\n";
+  }
+
+  graphml << "\n";
+
+  i = 1;
+  for (TNGraph::TEdgeI EI = Graph->BegEI(); EI < Graph->EndEI(); EI++){
+    graphml << "    <edge id=\"e"
+            << i++
+            << "\" directed=\"true"
+            << "\" source=\""
+            << EI.GetSrcNId()
+            << "\" target=\""
+            << EI.GetDstNId()
+            << "\"/>\n";
+  }
+
+  graphml << "  </graph>\n";
+  graphml << "</graphml>\n";
+  graphml.close();
+}
+
+\end{lstlisting}
+
+\section {GEXF|}
+\begin{lstlisting}[numbers=left,breaklines=true]
+void gexf(PNGraph Graph){
+  std::ofstream graph;
+  int i = 1;
+  graph.open("graph.gexf");
+
+  graph << "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n";
+  graph << "<gexf xmlns=\"http://www.gexf.net/1.2draft\" version=\"1.2\">\n";
+
+  graph << "  <graph mode=\"static\" defaultedgetype=\"directed\">\n";
+
+  graph << "    <nodes>\n";
+  for (TNGraph::TNodeI NI = Graph->BegNI(); NI < Graph->EndNI(); NI++){
+    graph << "      <node id=\"" << NI.GetId() << "\"/>\n";
+  }
+  graph << "    </nodes>\n";
+
+  graph << "    <edges>\n";
+  for (TNGraph::TEdgeI EI = Graph->BegEI(); EI < Graph->EndEI(); EI++){
+    graph << "      <edge id=\"e"
+            << i++
+            << "\" directed=\"true"
+            << "\" source=\""
+            << EI.GetSrcNId()
+            << "\" target=\""
+            << EI.GetDstNId()
+            << "\"/>\n";
+  }
+  graph << "    </edges>\n";
+  graph << "  </graph>\n";
+  graph << "</gexf>\n";
+
+  graph.close();
+}
+\end{lstlisting}
+
+
+\section {GDF}
+\begin{lstlisting}[numbers=left,breaklines=true]
+void gdf(PNGraph Graph){
+  std::ofstream graph;
+  graph.open("graph.gdf");
+
+  graph << "nodedef>name VARCHAR\n";
+  for (TNGraph::TNodeI NI = Graph->BegNI(); NI < Graph->EndNI(); NI++){
+    graph << NI.GetId() << ",\n";
+  }
+
+  graph << "edgedef>node1 VARCHAR,node2 VARCHAR\n";
+  for (TNGraph::TEdgeI EI = Graph->BegEI(); EI < Graph->EndEI(); EI++){
+    graph << EI.GetSrcNId() << "," << EI.GetDstNId() << "\n";
+  }
+
+  graph.close();
+}
+\end{lstlisting}
+
+
+\section{GraphSON}
+\begin{lstlisting}[numbers=left,breaklines=true]
+void graphson(PNGraph Graph){
+  std::ofstream graph;
+  const std::string TAB = "    ";
+  graph.open("graph.json");
+
+  graph << "{\n";
+  graph << TAB << "\"graph\": {\n";
+  graph << TAB << TAB << "\"mode\": \"NORMAL\", \n";
+  graph << TAB << TAB << "\"vertices\": [\n";
+
+  int i = 0;
+  for (TNGraph::TNodeI NI = Graph->BegNI(); NI < Graph->EndNI(); NI++){
+    i++;
+    graph << TAB << TAB << TAB << "{\n";
+    graph << TAB << TAB << TAB << TAB << "\"_id\": \"" << NI.GetId() << "\",\n";
+    graph << TAB << TAB << TAB << TAB << "\"_type\": \"vertex\"\n";
+
+    if (i == Graph->GetNodes()){
+      graph << TAB << TAB << TAB << "}\n";
+    } else {
+      graph << TAB << TAB << TAB << "},\n";
+    }
+  }
+
+
+  graph << TAB << TAB << "],\n";
+  graph << TAB << TAB << "\"edges\": [\n";
+
+  i = 0;
+  printf("Edges: %d", Graph->GetEdges());
+  for (TNGraph::TEdgeI EI = Graph->BegEI(); EI < Graph->EndEI(); EI++){
+    graph << TAB << TAB << TAB << "{\n";
+    graph << TAB << TAB << TAB << TAB << "\"_id\": \"" << i++ << "\",\n";
+    graph << TAB << TAB << TAB << TAB << "\"_type\": \"edge\"\n";
+    graph << TAB << TAB << TAB << TAB << "\"_outV\": \"" << EI.GetSrcNId() << "\"\n";
+    graph << TAB << TAB << TAB << TAB << "\"_inV\": \""<< EI.GetDstNId() << "\"\n";
+
+    if (i == Graph->GetEdges()){
+      graph << TAB << TAB << TAB << "}\n";
+    } else {
+      graph << TAB << TAB << TAB << "},\n";
+    }
+  }
+  graph << TAB << TAB << "]\n";
+  graph << TAB << "}\n";
+  graph << "}\n";
+
+  graph.close();
+
+}
+\end{lstlisting}
 
 \end{document}

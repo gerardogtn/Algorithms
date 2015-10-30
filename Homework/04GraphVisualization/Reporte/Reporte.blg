@@ -1,0 +1,53 @@
+This is BibTeX, Version 0.99d (TeX Live 2015)
+Capacity: max_strings=35307, hash_size=35307, hash_prime=30011
+The top-level auxiliary file: Reporte.aux
+The style file: apa.bst
+Database file #1: citations.bib
+Warning--entry type for "gexf" isn't style-file defined
+--line 27 of file citations.bib
+Warning--entry type for "gephi-tuto" isn't style-file defined
+--line 34 of file citations.bib
+Warning--empty year in gephi-tuto
+Warning--empty year in gexf
+You've used 3 entries,
+            1940 wiz_defined-function locations,
+            484 strings with 3871 characters,
+and the built_in function-call counts, 805 in all, are:
+= -- 74
+> -- 22
+< -- 4
++ -- 7
+- -- 6
+* -- 53
+:= -- 153
+add.period$ -- 7
+call.type$ -- 3
+change.case$ -- 17
+chr.to.int$ -- 2
+cite$ -- 5
+duplicate$ -- 38
+empty$ -- 62
+format.name$ -- 9
+if$ -- 151
+int.to.chr$ -- 2
+int.to.str$ -- 0
+missing$ -- 1
+newline$ -- 16
+num.names$ -- 10
+pop$ -- 22
+preamble$ -- 1
+purify$ -- 18
+quote$ -- 0
+skip$ -- 23
+stack$ -- 0
+substring$ -- 36
+swap$ -- 5
+text.length$ -- 1
+text.prefix$ -- 0
+top$ -- 0
+type$ -- 16
+warning$ -- 2
+while$ -- 6
+width$ -- 0
+write$ -- 33
+(There were 4 warnings)
